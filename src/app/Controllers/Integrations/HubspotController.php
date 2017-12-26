@@ -33,7 +33,7 @@ class HubspotController extends Controller {
 		return $return;
 	}
 
-	// Webhook Actions
+	// Import from HubSpot
 	public function postContactCreated($id) {
 		$item = \HubSpot::contacts()->getById($id);
 		$print_r($item);
@@ -52,6 +52,38 @@ class HubspotController extends Controller {
 
 	public function postDealCreated($id) {
 		$item = \HubSpot::deal()->getById($id);
+		$print_r($item);
+		$prop = $item->properties;
+		foreach($item->associations as $property_name => $property){
+			if($property_name=='associatedCompanyIds'){
+				$company_ids = $property;
+			} else if($property_name=='associatedVids')) {
+				$contact_ids = $property;
+			}
+		}
+		\Project::generateProject($prop->firstname, $properties->lastname, $item->email, $item->phone, ['external_code'=>$id]);
+		return ['created'=>true];
+	}
+
+	// Export to HubSpot
+	public function uploadContactCreated($id) {
+		$item = \HubSpot::deal()->createOrUpdate($email, $properties);
+		$print_r($item);
+		$prop = $item->properties;
+		\Business::generateContact('customer', $prop->firstname->value, $prop->lastname->value, $prop->email->value, $prop->phone->value, ['external_code'=>$id]);
+		return ['created'=>true];
+	}
+
+	public function uploadCompanyCreated($id) {
+		$item = \Solunes\Master\Business\Company::find($id);
+		$print_r($item);
+		$prop = $item->properties;
+		\Business::generateCompany('customer', $prop->name, ['external_code'=>$id]);
+		return ['created'=>true];
+	}
+
+	public function uploadDealCreated($id) {
+		$item = \Solunes\Master\Business\Deal::find($id);
 		$print_r($item);
 		$prop = $item->properties;
 		foreach($item->associations as $property_name => $property){

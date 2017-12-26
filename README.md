@@ -1,2 +1,2 @@
 # Business
-Proyecto de tienda en linea de Solunes Digital
+Proyecto para soporte maestro de negocios de Solunes Digital

@@ -14,7 +14,7 @@ class TruncateSeeder extends Seeder {
     public function run()
     {
         \Solunes\Business\App\Contact::truncate();
-        \Solunes\Business\App\Business::truncate();
+        \Solunes\Business\App\Company::truncate();
         \Solunes\Business\App\Agency::truncate();
         \Solunes\Business\App\Currency::truncate();
         \Solunes\Business\App\City::truncate();

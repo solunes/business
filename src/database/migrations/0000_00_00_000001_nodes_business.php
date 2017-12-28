@@ -71,12 +71,11 @@ class NodesBusiness extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();
-            $table->enum('type', ['customer', 'supplier', 'partner', 'employee', 'other'])->nullable()->default('store');
+            $table->enum('type', ['customer', 'supplier', 'partner', 'employee', 'other'])->nullable()->default('customer');
             $table->integer('region_id')->nullable();
             $table->integer('city_id')->nullable();
             $table->integer('company_id')->nullable();
             $table->string('position')->nullable();
-            $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('address_extra')->nullable();

@@ -3,18 +3,22 @@
 return array(
 
 	// MENU
-	'business' => 'Proyecto',
+	'business' => 'Negocio',
+	'parameters' => 'Parámetros',
 
 	// CUSTOM TRANS
-	'closed' => 'Cerrado',
-	'finished' => 'Finalizado',
-	'not-detected' => 'No Encontrado',
-	'opened' => 'Abierto',
-	'partially-attended' => 'Parcialmente Atendido',
-	'paused' => 'Pausado',
-	'business' => 'Proyecto',
-	'reopened' => 'Reabierto',
-	'started' => 'Iniciado',
-	'support' => 'Soporte',
+	'0' => 'No',
+	'1' => 'Si',
+	'central' => 'Central',
+	'customer' => 'Cliente',
+	'employee' => 'Empleado',
+	'main' => 'Principal',
+	'office' => 'Oficina',
+	'other' => 'Otro',
+	'partner' => 'Socio',
+	'secondary' => 'Secundario',
+	'storage' => 'Almacen',
+	'store' => 'Tienda',
+	'supplier' => 'Proveedor',
 
 );

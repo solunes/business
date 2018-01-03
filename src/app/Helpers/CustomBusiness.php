@@ -7,48 +7,6 @@ use Form;
 class CustomBusiness {
    
     public static function after_seed_actions() {
-        /*$node_array['currency'] = ['action_field'=>['edit']];
-        foreach($node_array as $node_name => $node_detail){
-            $node = \Solunes\Master\App\Node::where('name', $node_name)->first();
-            foreach($node_detail as $extra_type => $extra_value) {
-                $node_extra = new \Solunes\Master\App\NodeExtra;
-                $node_extra->parent_id = $node->id;
-                $node_extra->type = $extra_type;
-                $node_extra->value_array = json_encode($extra_value);
-                $node_extra->save();
-            }
-        }*/
-        // Borrar opciones del menú
-        //\Solunes\Master\App\Menu::where('menu_type', 'admin')->where('level', 1)->whereTranslation('name', 'Global')->delete();
-        // Menú
-        //$pm = \Solunes\Master\App\Menu::where('menu_type', 'admin')->whereTranslation('name', 'Contabilidad')->first();
-        //$menu_array[] = ['parent_id'=>$pm->id,'level'=>2,'icon'=>'pencil','name'=>'Crear Ingreso','link'=>'admin/model/income/create'];
-        //$menu_array[] = ['parent_id'=>$pm->id,'level'=>2,'icon'=>'th-list','name'=>'Reporte de Ingresos','link'=>'admin/account-cash-flow/credit'];
-        $pm = new \Solunes\Master\App\Menu;
-        $pm->level = 1;
-        $pm->type = 'blank';
-        $pm->menu_type = 'admin';
-        $pm->icon = 'area-chart';
-        $pm->name = 'Gestión de Proyectos';
-        $pm->save();
-        $menu_array[] = ['parent_id'=>$pm->id,'level'=>2,'icon'=>'bar-chart','name'=>'Dashboard de Proyectos','link'=>'admin/business-dashboard'];
-        $menu_array[] = ['parent_id'=>$pm->id,'level'=>2,'icon'=>'bar-chart','name'=>'Proyectos','link'=>'admin/businesss'];
-        $menu_array[] = ['parent_id'=>$pm->id,'level'=>2,'icon'=>'bar-chart','name'=>'Wikis','link'=>'admin/wikis'];
-        foreach($menu_array as $new_menu){
-            $menu = new \Solunes\Master\App\Menu;
-            if(isset($new_menu['parent_id'])){
-                $menu->parent_id = $new_menu['parent_id'];
-            }
-            $menu->level = $new_menu['level'];
-            $menu->menu_type = 'admin';
-            $menu->icon = $new_menu['icon'];
-            $menu->name = $new_menu['name'];
-            $menu->link = $new_menu['link'];
-            if(isset($new_menu['order'])){
-                $menu->order = $new_menu['order'];
-            }
-            $menu->save();
-        }
         return 'After seed realizado correctamente.';
     }
        

@@ -20,3 +20,10 @@ Route::group(['prefix'=>'gitlab'], function(){
     Route::get('/business/{business_name}/{group_name}', 'GitlabController@getBusiness');
     Route::get('/business-commits/{business_name}/{group_name}', 'GitlabController@getBusinessCommits');
 });
+
+Route::group(['prefix'=>'hubspot'], function(){
+    Route::get('/import-companies/{count?}', 'Integrations\HubspotController@getImportCompanies');
+    Route::get('/import-contacts/{count?}', 'Integrations\HubspotController@getImportContacts');
+    Route::get('/import-deals/{count?}', 'Integrations\HubspotController@getImportDeals');
+    Route::post('/webhook', 'Integrations\HubspotController@postHubspotWebhook');
+});

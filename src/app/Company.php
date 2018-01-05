@@ -12,16 +12,16 @@ class Company extends Model {
 	/* Creating rules */
 	public static $rules_create = array(
 		'name'=>'required',
+		'industry'=>'required',
 		'type'=>'required',
-		'address'=>'required',
 	);
 
 	/* Updating rules */
 	public static $rules_edit = array(
 		'id'=>'required',
 		'name'=>'required',
+		'industry'=>'required',
 		'type'=>'required',
-		'address'=>'required',
 	);
 
     public function contacts() {

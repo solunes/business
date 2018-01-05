@@ -27,11 +27,9 @@ class BusinessServiceProvider extends ServiceProvider {
 
     public function register() {
         /* Registrar ServiceProvider Internos */
-        $this->app->register('Rossjcooper\LaravelHubSpot\HubSpotServiceProvider');
 
         /* Registrar Alias */
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        $loader->alias('HubSpot', 'Rossjcooper\LaravelHubSpot\Facades\HubSpot');
 
         $loader->alias('Business', '\Solunes\Business\App\Helpers\Business');
         $loader->alias('CustomBusiness', '\Solunes\Business\App\Helpers\CustomBusiness');

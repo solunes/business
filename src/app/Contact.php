@@ -11,19 +11,19 @@ class Contact extends Model {
 
 	/* Creating rules */
 	public static $rules_create = array(
-		'first_name'=>'required',
-		'last_name'=>'required',
+		'firstname'=>'required',
+		'lastname'=>'required',
 		'type'=>'required',
-		'city_id'=>'required',
+		'email'=>'required',
 	);
 
 	/* Updating rules */
 	public static $rules_edit = array(
 		'id'=>'required',
-		'first_name'=>'required',
-		'last_name'=>'required',
+		'firstname'=>'required',
+		'lastname'=>'required',
 		'type'=>'required',
-		'city_id'=>'required',
+		'email'=>'required',
 	);
         
     public function region() {

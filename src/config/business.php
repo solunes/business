@@ -7,9 +7,9 @@ return [
 
 	// INTEGRATIONS
 	'gitlab' => false,
-	'gitlab_api_key' => NULL,
+	'gitlab_api_key' => env('GITLAB_API_KEY'),
 	'hubspot' => false,
-	'hubspot_api_key' => NULL,
+	'hubspot_api_key' => env('HUBSPOT_API_KEY'),
 
 	// CUSTOM FORMS
     'item_get_after_vars' => ['purchase','product'], // array de nodos: 'node'

@@ -56,31 +56,50 @@ class NodesBusiness extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->enum('type', ['customer', 'supplier', 'partner', 'other'])->nullable()->default('customer');
-            $table->string('address')->nullable();
+            $table->string('industry')->nullable();
+            $table->string('domain')->nullable();
             $table->string('phone')->nullable();
-            $table->string('section')->nullable();
+            $table->enum('type', ['customer', 'supplier', 'partner', 'other'])->nullable()->default('customer');
             $table->string('image')->nullable();
             $table->string('external_code')->nullable();
-            $table->text('content')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
         Schema::create('contacts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
             $table->string('email')->nullable();
             $table->enum('type', ['customer', 'supplier', 'partner', 'employee', 'other'])->nullable()->default('customer');
-            $table->integer('region_id')->nullable();
-            $table->integer('city_id')->nullable();
             $table->integer('company_id')->nullable();
-            $table->string('position')->nullable();
+            $table->string('jobtitle')->nullable();
             $table->string('phone')->nullable();
-            $table->string('address')->nullable();
-            $table->string('address_extra')->nullable();
             $table->string('external_code')->nullable();
+            $table->text('message')->nullable();
+            $table->timestamps();
+        });
+        Schema::create('deals', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('dealname')->nullable();
+            $table->string('service')->nullable();
+            $table->integer('amount')->nullable();
+            $table->string('dealstage')->nullable();
+            $table->string('dealtype')->nullable();
             $table->text('content')->nullable();
+            $table->string('external_code')->nullable();
+            $table->timestamps();
+        });
+        Schema::create('deal_company', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('deal_id')->nullable();
+            $table->integer('company_id')->nullable();
+            $table->timestamps();
+        });
+        Schema::create('deal_contact', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('deal_id')->nullable();
+            $table->integer('contact_id')->nullable();
             $table->timestamps();
         });
     }
@@ -93,6 +112,9 @@ class NodesBusiness extends Migration
     public function down()
     {
         // Módulo General de Negocio
+        Schema::dropIfExists('deal_contact');
+        Schema::dropIfExists('deal_company');
+        Schema::dropIfExists('deals');
         Schema::dropIfExists('contacts');
         Schema::dropIfExists('companies');
         Schema::dropIfExists('agencies');

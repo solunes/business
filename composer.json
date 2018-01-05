@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "rossjcooper/laravel-hubspot": "1.*",
+        "ryanwinchester/hubspot-php": "1.*",
         "solunes/master": "1.*"
     },
     "require-dev": {

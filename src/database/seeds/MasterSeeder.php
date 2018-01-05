@@ -21,6 +21,9 @@ class MasterSeeder extends Seeder {
         $node_agency = \Solunes\Master\App\Node::create(['name'=>'agency', 'table_name'=>'agencies', 'location'=>'business', 'folder'=>'parameters']);
         $node_company = \Solunes\Master\App\Node::create(['name'=>'company', 'table_name'=>'companies', 'location'=>'business', 'folder'=>'business']);
         $node_contact = \Solunes\Master\App\Node::create(['name'=>'contact', 'location'=>'business', 'folder'=>'business']);
+        $node_deal = \Solunes\Master\App\Node::create(['name'=>'deal', 'location'=>'business', 'folder'=>'business']);
+        $node_deal_company = \Solunes\Master\App\Node::create(['name'=>'deal-company', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Company']);
+        $node_deal_contact = \Solunes\Master\App\Node::create(['name'=>'deal-contact', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Contact']);
 
         // Usuarios
         $admin = \Solunes\Master\App\Role::where('name', 'admin')->first();

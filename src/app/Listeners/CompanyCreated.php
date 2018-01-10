@@ -7,7 +7,8 @@ class CompanyCreated {
     public function handle($event) {
     	// Revisar que no esté de manera externa
     	if($event&&!$event->external_code){
-            $event = \Solunes\Business\App\Controllers\Integrations\HubspotController::exportCompany($event);
+    		$hubspot = new \Solunes\Business\App\Controllers\Integrations\HubspotController;
+            $event = $hubspot->exportCompanyCreated($event->id);
             return $event;
     	}
     }

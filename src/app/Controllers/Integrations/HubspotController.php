@@ -13,10 +13,10 @@ class HubspotController extends Controller {
 	protected $request;
 	protected $url;
 
-	public function __construct(UrlGenerator $url) {
+	public function __construct() {
 	  //$this->middleware('auth');
 	  //$this->middleware('permission:dashboard');
-	  $this->prev = $url->previous();
+	  //$this->prev = $url->previous();
 	  $this->module = 'admin';
 	  $this->company_fields = ['name','industry','domain','phone','description'];
 	  $this->contact_fields = ['firstname','lastname','email','jobtitle','phone'];
@@ -123,20 +123,20 @@ class HubspotController extends Controller {
 	public function exportCompanyCreated($id) {
 		$item = \Solunes\Master\Business\Company::find($id);
         $array = $this->company_fields;
-        $this->processExportOne($item, $array, 'company');
+        $this->processExportOne($item, $array, 'companies');
 		return ['created'=>true];
 	}
 
 	// Export Contact to HubSpot
 	public function exportContactCreated($id) {
-		$item = \Solunes\Master\Business\Contact::find($id);
+		$item = \Solunes\Business\App\Contact::find($id);
         $array = $this->contact_fields;
-        $this->processExportOne($item, $array, 'contact');
+        $this->processExportOne($item, $array, 'contacts');
 		return ['created'=>true];
 	}
 
 	// Export Deal to HubSpot
-	/*public function exportDealCreated($id) {
+	/*public static function exportDealCreated($id) {
 		$item = \Solunes\Master\Business\Deal::find($id);
 		\Business::exportDeal($item);
 		return ['created'=>true];
@@ -190,9 +190,9 @@ class HubspotController extends Controller {
 	// Generate Hubspot Export Query for One
 	public function processExportOne($item, $array, $node) {
         $properties = $this->generateHubspotField($item, $array);
-        $fixed_item['properties'] = $properties;
+        $fixed_item = $properties;
         $item = $this->generateHubspotQuery($node, $item, $fixed_item);
-		return $created;
+		return $item;
 	}
 
 	// Puts Item in Database or Replace if Exists
@@ -241,7 +241,7 @@ class HubspotController extends Controller {
     public function generateHubspotField($item, $array) {
         foreach($array as $field){
             if($value = $item->$field){
-                $properties[] = ['name'=>$field, 'value'=>$value];
+                $properties[] = ['property'=>$field, 'value'=>$value];
             }
         }
         return $properties;
@@ -249,15 +249,20 @@ class HubspotController extends Controller {
 
 	// Get Mass Query Formatted Identifiers
     public function generateHubspotQuery($type, $item, $fixed_item) {
-        $fixed_item = json_encode($fixed_item);
+		$hubspot = $this->initiateHubspot();
+        //$fixed_item = json_encode($fixed_item);
         if($item->external_code){
             $action = 'update';
-            $response = \HubSpot::$type()->$action($item->external_code, $fixed_item);
+            $response = $hubspot->$type()->$action($item->external_code, $fixed_item);
         } else {
             $action = 'create';
-            $response = \HubSpot::$type()->$action($fixed_item);
-            $item->external_code = $response->portalId;
-            $item->save();
+            $response = $hubspot->$type()->$action($fixed_item);
+            if($data = $response->data){
+            	if($identifiers = $this->getIdentifiers($data)){
+		            $item->external_code = $identifiers['external_code'];
+		            $item->save();
+            	}
+            }
         }
         return $item;
     }

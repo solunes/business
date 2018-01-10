@@ -41,7 +41,7 @@ class HubspotController extends Controller {
 		$node = \FuncNode::get_node('company');
 		$array = $this->company_fields;
 		$hubspot = $this->initiateHubspot();
-		$all_array = $this->generateQueryAllArray($array, $count);
+		$all_array = $this->generateQueryAllArray($array, 'company', $count);
 		$response = $hubspot->companies()->all($all_array);
 		return $response->companies; // BORRAR
 		$count = $this->processImportMany($response->companies, $array, $node);
@@ -53,7 +53,7 @@ class HubspotController extends Controller {
 		$node = \FuncNode::get_node('contact');
 		$array = $this->contact_fields;
 		$hubspot = $this->initiateHubspot();
-		$all_array = $this->generateQueryAllArray($array, $count);
+		$all_array = $this->generateQueryAllArray($array, 'contact', $count);
 		$response = $hubspot->contacts()->all($all_array);
 		return $response->contacts; // BORRAR
 		$count = $this->processImportMany($response->contacts, $array, $node);
@@ -85,7 +85,7 @@ class HubspotController extends Controller {
 		$node = \FuncNode::get_node('company');
 		$array = $this->company_fields;
 		$hubspot = $this->initiateHubspot();
-		$all_array = $this->generateQueryAllArray($array, $count);
+		$all_array = $this->generateQueryAllArray($array, 'company', $count);
 		$response = $hubspot->companies()->getById($id, $all_array);
 		$count = $this->processImportOne($response, $array, $node);
 		return ['created'=>true];
@@ -96,7 +96,7 @@ class HubspotController extends Controller {
 		$node = \FuncNode::get_node('contact');
 		$array = $this->contact_fields;
 		$hubspot = $this->initiateHubspot();
-		$all_array = $this->generateQueryAllArray($array, $count);
+		$all_array = $this->generateQueryAllArray($array, 'contact', $count);
 		$response = $hubspot->contacts()->getById($id, $all_array);
 		$count = $this->processImportOne($response, $array, $node);
 		return ['created'=>true];
@@ -152,10 +152,15 @@ class HubspotController extends Controller {
 	}
 
 	// Generate Hubspot Query To All
-	public function generateQueryAllArray($properties, $count = 50) {
+	public function generateQueryAllArray($properties, $type, $count = 50) {
+		if($type=='contact'){
+			$property_key = 'property';
+		} else {
+			$property_key = 'properties';
+		}
 		$array = [
 		    'count'     => $count,
-		    'property'  => $properties,
+		    $property_key  => $properties,
 		    //'vidOffset' => 123456,
 		];
 		return $array;

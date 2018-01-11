@@ -43,7 +43,6 @@ class HubspotController extends Controller {
 		$hubspot = $this->initiateHubspot();
 		$all_array = $this->generateQueryAllArray($array, 'company', $count);
 		$response = $hubspot->companies()->all($all_array);
-		return $response->companies; // BORRAR
 		$count = $this->processImportMany($response->companies, $array, $node);
 		return ['done'=>true, 'recieved_count'=>count($response->companies), 'processed_count'=>$count];
 	}
@@ -55,7 +54,6 @@ class HubspotController extends Controller {
 		$hubspot = $this->initiateHubspot();
 		$all_array = $this->generateQueryAllArray($array, 'contact', $count);
 		$response = $hubspot->contacts()->all($all_array);
-		return $response->contacts; // BORRAR
 		$count = $this->processImportMany($response->contacts, $array, $node);
 		return ['done'=>true, 'recieved_count'=>count($response->contacts), 'processed_count'=>$count];
 	}
@@ -121,7 +119,7 @@ class HubspotController extends Controller {
 
 	// Export Company to HubSpot
 	public function exportCompanyCreated($id) {
-		$item = \Solunes\Master\Business\Company::find($id);
+		$item = \Solunes\Business\App\Company::find($id);
         $array = $this->company_fields;
         $this->processExportOne($item, $array, 'companies');
 		return ['created'=>true];
@@ -137,7 +135,7 @@ class HubspotController extends Controller {
 
 	// Export Deal to HubSpot
 	/*public static function exportDealCreated($id) {
-		$item = \Solunes\Master\Business\Deal::find($id);
+		$item = \Solunes\Business\App\Deal::find($id);
 		\Business::exportDeal($item);
 		return ['created'=>true];
 	}*/
@@ -184,7 +182,7 @@ class HubspotController extends Controller {
         $main_array = $this->importHubspotProperty($properties, $array);
         if(count($main_array)>0){
 	        $main_array['type'] = 'customer';
-	        $identifiers = $this->getIdentifiers($item);
+	        $identifiers = $this->getIdentifiers($item, $node);
 	        $model = \FuncNode::node_check_model($node);
 			$this->putInDatabase($model, $main_array, $identifiers);
 			$created = true;
@@ -194,7 +192,7 @@ class HubspotController extends Controller {
 
 	// Generate Hubspot Export Query for One
 	public function processExportOne($item, $array, $node) {
-        $properties = $this->generateHubspotField($item, $array);
+        $properties = $this->generateHubspotField($item, $node, $array);
         $fixed_item = $properties;
         $item = $this->generateHubspotQuery($node, $item, $fixed_item);
 		return $item;
@@ -243,10 +241,15 @@ class HubspotController extends Controller {
         return $object;
     }
 
-    public function generateHubspotField($item, $array) {
+    public function generateHubspotField($item, $type, $array) {
+    	if($type=='contacts'){
+    		$property_key = 'property';
+    	} else {
+    		$property_key = 'name';
+    	}
         foreach($array as $field){
             if($value = $item->$field){
-                $properties[] = ['property'=>$field, 'value'=>$value];
+                $properties[] = [$property_key=>$field, 'value'=>$value];
             }
         }
         return $properties;
@@ -263,7 +266,7 @@ class HubspotController extends Controller {
             $action = 'create';
             $response = $hubspot->$type()->$action($fixed_item);
             if($data = $response->data){
-            	if($identifiers = $this->getIdentifiers($data)){
+            	if($identifiers = $this->getIdentifiers($data, $type)){
 		            $item->external_code = $identifiers['external_code'];
 		            $item->save();
             	}
@@ -273,20 +276,26 @@ class HubspotController extends Controller {
     }
 
 	// Get Mass Query Formatted Identifiers
-	public function getIdentifiers($item) {
-		$profiles = $item->{"identity-profiles"};
-		$return = [];
-		foreach($profiles as $profile){
-			foreach($profile->identities as $identity){
-				if(isset($identity->type)){
-					$name = $identity->type;
-					if($name=='LEAD_GUID'){
-						$name = 'external_code';
+	public function getIdentifiers($item, $type) {
+		if($type=='contacts'){
+			$profiles = $item->{"identity-profiles"};
+			$return = [];
+			foreach($profiles as $profile){
+				foreach($profile->identities as $identity){
+					if(isset($identity->type)){
+						$name = $identity->type;
+						if($name=='LEAD_GUID'){
+							$name = 'external_code';
+						}
+						$name = strtolower($name);
+						$return[$name] = $identity->value;
 					}
-					$name = strtolower($name);
-					$return[$name] = $identity->value;
 				}
 			}
+		} else if($type=='companies') {
+			$return['external_code'] = $item->companyId;
+		} else if($type=='deals') {
+			$return['external_code'] = $item->dealId;
 		}
 		return $return;
 	}

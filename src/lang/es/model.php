@@ -17,6 +17,7 @@ return [
     'deal' => 'Negocio|Negocios',
     'deal-company' => 'Compañia en Negocio|Compañias en Negocio',
     'deal-contact' => 'Contacto en Negocio|Contactos en Negocio',
+    'product-bridge' => 'Producto (Puente)|Productos (Puente)',
     'region' => 'Región|Regiones',
 
 ];

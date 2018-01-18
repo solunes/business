@@ -102,6 +102,19 @@ class NodesBusiness extends Migration
             $table->integer('contact_id')->nullable();
             $table->timestamps();
         });
+        Schema::create('product_bridges', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('node_name')->nullable();
+            $table->string('node_id')->nullable();
+            $table->string('name')->nullable();
+            $table->string('image')->nullable();
+            $table->text('description')->nullable();
+            $table->integer('currency_id')->unsigned();
+            $table->decimal('price', 10, 2)->nullable()->default(0);
+            $table->decimal('weight', 10, 2)->nullable()->default(0);
+            $table->timestamps();
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
+        });
     }
 
     /**
@@ -112,6 +125,7 @@ class NodesBusiness extends Migration
     public function down()
     {
         // Módulo General de Negocio
+        Schema::dropIfExists('product_bridges');
         Schema::dropIfExists('deal_contact');
         Schema::dropIfExists('deal_company');
         Schema::dropIfExists('deals');

@@ -17,5 +17,6 @@ return [
     'deal' => 'Deal|Deals',
     'deal-company' => 'Deal Company|Deal Companies',
     'deal-contact' => 'Deal Contact|Deal Contacts',
+    'product-bridge' => 'Product (Bridge)|Products (Bridge)',
     'region' => 'Region|Regions',
 ];

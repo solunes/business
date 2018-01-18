@@ -12,6 +12,7 @@ return array(
 	'central' => 'Central',
 	'customer' => 'Cliente',
 	'employee' => 'Empleado',
+	'hidden' => 'Oculto',
 	'main' => 'Principal',
 	'office' => 'Oficina',
 	'other' => 'Otro',

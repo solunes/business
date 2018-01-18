@@ -7,6 +7,20 @@ use Form;
 class CustomBusiness {
    
     public static function after_seed_actions() {
+        // Arreglar Action Fields y Action Nodes
+        $node_array['currency'] = ['action_field'=>['edit']];
+        $node_array['agency'] = ['action_field'=>['edit']];
+        $node_array['user'] = ['action_field'=>['edit']];
+        \Business::changeNodeActionFields($node_array);
+
+        // Menu
+        $pm = new \Solunes\Master\App\Menu;
+        $pm->level = 1;
+        $pm->type = 'blank';
+        $pm->menu_type = 'admin';
+        $pm->icon = 'area-chart';
+        $pm->name = 'Reportes';
+        $pm->save();
         return 'After seed realizado correctamente.';
     }
        

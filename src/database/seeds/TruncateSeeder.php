@@ -13,6 +13,7 @@ class TruncateSeeder extends Seeder {
      */
     public function run()
     {
+        \Solunes\Business\App\ProductBridge::truncate();
         \Solunes\Business\App\Contact::truncate();
         \Solunes\Business\App\Company::truncate();
         \Solunes\Business\App\Agency::truncate();

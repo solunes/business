@@ -6,6 +6,7 @@ return [
 	'after_seed' => true,
 	'seed_currencies' => true,
 	'seed_regions' => true,
+	'seed_agencies' => true,
 	'main_exchange' => 6.96,
 
 	// INTEGRATIONS

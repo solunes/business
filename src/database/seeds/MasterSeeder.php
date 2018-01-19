@@ -56,6 +56,10 @@ class MasterSeeder extends Seeder {
             $region_10 = \Solunes\Business\App\Region::create(['name'=>'Otro']);
             $city_10_1 = \Solunes\Business\App\City::create(['name'=>'Otra Ciudad', 'region_id'=>$region_10->id, 'active'=>1]);
         }
+        
+        if(config('business.seed_agencies')){
+            $place_1 = \Solunes\Business\App\Agency::create(['name'=>'Central','type'=>'central','address'=>'Dirección de muestra']);
+        }
 
         // Usuarios
         $admin = \Solunes\Master\App\Role::where('name', 'admin')->first();

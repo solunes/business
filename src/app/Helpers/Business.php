@@ -149,5 +149,16 @@ class Business {
             return view($view, $array);
         } 
     }
+    
+    public static function createProductBridge($product_type, $product_id, $array) {
+        $item = new \Solunes\Business\App\ProductBridge;
+        $item->product_type = $product_type;
+        $item->product_id = $product_id;
+        foreach($array as $name => $value){
+            $item->$name = $value;
+        }
+        $item->save();
+        return $item;
+    }
 
 }

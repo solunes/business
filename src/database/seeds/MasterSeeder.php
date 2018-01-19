@@ -25,6 +25,37 @@ class MasterSeeder extends Seeder {
         $node_deal_company = \Solunes\Master\App\Node::create(['name'=>'deal-company', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Company']);
         $node_deal_contact = \Solunes\Master\App\Node::create(['name'=>'deal-contact', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Contact']);
         $node_product_bridge = \Solunes\Master\App\Node::create(['name'=>'product-bridge', 'location'=>'business', 'folder'=>'hidden']);
+        
+        if(config('business.seed_currencies')){
+            $currency_1 = \Solunes\Business\App\Currency::create(['name'=>'Bs.','type'=>'main','plural'=>'bolivianos','code'=>'BOB','main_exchange'=>1]);
+            $currency_2 = \Solunes\Business\App\Currency::create(['name'=>'US$','type'=>'secondary','plural'=>'dolares','code'=>'USD','main_exchange'=>config('initial_exchange')]);
+        }
+
+        if(config('business.seed_regions')){
+            $region_1 = \Solunes\Business\App\Region::create(['name'=>'La Paz']);
+            $city_1_1 = \Solunes\Business\App\City::create(['name'=>'La Paz', 'region_id'=>$region_1->id, 'active'=>1]);
+            $city_1_2 = \Solunes\Business\App\City::create(['name'=>'El Alto', 'region_id'=>$region_1->id, 'active'=>1]);
+            $region_2 = \Solunes\Business\App\Region::create(['name'=>'Santa Cruz']);
+            $city_2_1 = \Solunes\Business\App\City::create(['name'=>'Santa Cruz de la Sierra', 'region_id'=>$region_2->id, 'active'=>1]);
+            $city_2_2 = \Solunes\Business\App\City::create(['name'=>'Montero', 'region_id'=>$region_1->id, 'active'=>1]);
+            $region_3 = \Solunes\Business\App\Region::create(['name'=>'Cochabamba']);
+            $city_3_1 = \Solunes\Business\App\City::create(['name'=>'Cochabamba', 'region_id'=>$region_3->id, 'active'=>1]);
+            $city_3_2 = \Solunes\Business\App\City::create(['name'=>'Quillacollo', 'region_id'=>$region_3->id, 'active'=>1]);
+            $region_4 = \Solunes\Business\App\Region::create(['name'=>'Chuquisaca']);
+            $city_4_1 = \Solunes\Business\App\City::create(['name'=>'Sucre', 'region_id'=>$region_4->id, 'active'=>1]);
+            $region_5 = \Solunes\Business\App\Region::create(['name'=>'Oruro']);
+            $city_5_1 = \Solunes\Business\App\City::create(['name'=>'Oruro', 'region_id'=>$region_5->id, 'active'=>1]);
+            $region_6 = \Solunes\Business\App\Region::create(['name'=>'Tarija']);
+            $city_6_1 = \Solunes\Business\App\City::create(['name'=>'Tarija', 'region_id'=>$region_6->id, 'active'=>1]);
+            $region_7 = \Solunes\Business\App\Region::create(['name'=>'Potosi']);
+            $city_7_1 = \Solunes\Business\App\City::create(['name'=>'Potosi', 'region_id'=>$region_7->id, 'active'=>1]);
+            $region_8 = \Solunes\Business\App\Region::create(['name'=>'Beni']);
+            $city_8_1 = \Solunes\Business\App\City::create(['name'=>'Trinidad', 'region_id'=>$region_8->id, 'active'=>1]);
+            $region_9 = \Solunes\Business\App\Region::create(['name'=>'Pando']);
+            $city_9_1 = \Solunes\Business\App\City::create(['name'=>'Cobija', 'region_id'=>$region_9->id, 'active'=>1]);
+            $region_10 = \Solunes\Business\App\Region::create(['name'=>'Otro']);
+            $city_10_1 = \Solunes\Business\App\City::create(['name'=>'Otra Ciudad', 'region_id'=>$region_10->id, 'active'=>1]);
+        }
 
         // Usuarios
         $admin = \Solunes\Master\App\Role::where('name', 'admin')->first();

@@ -104,10 +104,12 @@ class NodesBusiness extends Migration
         });
         Schema::create('product_bridges', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('node_name')->nullable();
-            $table->string('node_id')->nullable();
+            $table->string('product_type')->nullable();
+            $table->string('product_id')->nullable();
             $table->string('name')->nullable();
+            $table->string('slug')->nullable();
             $table->string('image')->nullable();
+            $table->string('internal_url')->nullable();
             $table->text('description')->nullable();
             $table->integer('currency_id')->unsigned();
             $table->decimal('price', 10, 2)->nullable()->default(0);

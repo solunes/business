@@ -192,8 +192,15 @@ class HubspotController extends Controller {
 
 	// Generate Hubspot Export Query for One
 	public function processExportOne($item, $array, $node) {
-        $properties = $this->generateHubspotField($item, $node, $array);
-        $fixed_item = $properties;
+		if($node=='contacts'&&!$item->external_code){
+			$hubspot = $this->initiateHubspot();
+            $response = $hubspot->$node()->getByEmail($item->email, ['property'=>NULL, 'propertyMode'=>'value_only']);
+        	if($identifiers = $this->getIdentifiers($response->data, $node)){
+	            $item->external_code = $identifiers['external_code'];
+	            $item->save();
+        	}
+		}
+        $fixed_item = $this->generateHubspotField($item, $node, $array);
         $item = $this->generateHubspotQuery($node, $item, $fixed_item);
 		return $item;
 	}
@@ -258,13 +265,12 @@ class HubspotController extends Controller {
 	// Get Mass Query Formatted Identifiers
     public function generateHubspotQuery($type, $item, $fixed_item) {
 		$hubspot = $this->initiateHubspot();
-        //$fixed_item = json_encode($fixed_item);
         if($item->external_code){
             $action = 'update';
             $response = $hubspot->$type()->$action($item->external_code, $fixed_item);
         } else {
-            $action = 'create';
-            $response = $hubspot->$type()->$action($fixed_item);
+        	$action = 'create';
+        	$response = $hubspot->$type()->$action($fixed_item);
             if($data = $response->data){
             	if($identifiers = $this->getIdentifiers($data, $type)){
 		            $item->external_code = $identifiers['external_code'];

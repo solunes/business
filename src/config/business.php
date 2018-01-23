@@ -7,6 +7,7 @@ return [
 	'seed_currencies' => true,
 	'seed_regions' => true,
 	'seed_agencies' => true,
+	'product_images' => true,
 	'main_exchange' => 6.96,
 
 	// INTEGRATIONS

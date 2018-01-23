@@ -106,16 +106,23 @@ class NodesBusiness extends Migration
             $table->increments('id');
             $table->string('product_type')->nullable();
             $table->string('product_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('slug')->nullable();
             $table->string('image')->nullable();
-            $table->string('internal_url')->nullable();
-            $table->text('description')->nullable();
             $table->integer('currency_id')->unsigned();
             $table->decimal('price', 10, 2)->nullable()->default(0);
             $table->decimal('weight', 10, 2)->nullable()->default(0);
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
+        });
+        Schema::create('product_bridge_translation', function(Blueprint $table) {
+            $table->increments('id');
+            $table->integer('product_bridge_id')->unsigned();
+            $table->string('locale')->index();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->string('internal_url')->nullable();
+            $table->text('content')->nullable();
+            $table->unique(['product_bridge_id','locale']);
+            $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
         });
     }
 
@@ -127,6 +134,7 @@ class NodesBusiness extends Migration
     public function down()
     {
         // Módulo General de Negocio
+        Schema::dropIfExists('product_bridge_translation');
         Schema::dropIfExists('product_bridges');
         Schema::dropIfExists('deal_contact');
         Schema::dropIfExists('deal_company');

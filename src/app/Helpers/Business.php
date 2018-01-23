@@ -150,12 +150,21 @@ class Business {
         } 
     }
     
-    public static function createProductBridge($product_type, $product_id, $array) {
+    public static function createProductBridge($product_type, $product_id, $array, $lang_array) {
         $item = new \Solunes\Business\App\ProductBridge;
         $item->product_type = $product_type;
         $item->product_id = $product_id;
         foreach($array as $name => $value){
-            $item->$name = $value;
+            if($name=='image'){
+                $item->$name = \Asset::upload_image($value, 'product-bridge-image');
+            } else {
+                $item->$name = $value;
+            }
+        }
+        foreach($lang_array as $lang => $lang_subarray){
+          foreach($lang_subarray as $key => $value){
+            $item->translateOrNew($lang)->$key = $value;
+          }
         }
         $item->save();
         return $item;

@@ -37,7 +37,7 @@ class MasterSeeder extends Seeder {
 
         if(config('business.seed_currencies')){
             $currency_1 = \Solunes\Business\App\Currency::create(['name'=>'Bs.','type'=>'main','plural'=>'bolivianos','code'=>'BOB','main_exchange'=>1]);
-            $currency_2 = \Solunes\Business\App\Currency::create(['name'=>'US$','type'=>'secondary','plural'=>'dolares','code'=>'USD','main_exchange'=>config('initial_exchange')]);
+            $currency_2 = \Solunes\Business\App\Currency::create(['name'=>'US$','type'=>'secondary','plural'=>'dolares','code'=>'USD','main_exchange'=>config('business.main_exchange')]);
         }
 
         if(config('business.seed_regions')){

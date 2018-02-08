@@ -9,6 +9,11 @@ class Region extends Model {
 	protected $table = 'regions';
 	public $timestamps = true;
 
+	public $translatedAttributes = ['name'];
+    protected $fillable = ['name', 'active'];
+
+    use \Dimsav\Translatable\Translatable;
+
 	/* Creating rules */
 	public static $rules_create = array(
 		'name'=>'required',

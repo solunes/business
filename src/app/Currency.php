@@ -9,6 +9,12 @@ class Currency extends Model {
 	protected $table = 'currencies';
 	public $timestamps = true;
 
+	public $translatedAttributes = ['name','plural'];
+    protected $fillable = ['name', 'plural', 'type', 'main_exchange'];
+
+    use \Dimsav\Translatable\Translatable;
+
+
 	/* Creating rules */
 	public static $rules_create = array(
 		'code'=>'required',

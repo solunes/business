@@ -19,28 +19,49 @@ class NodesBusiness extends Migration
         // Módulo General de Negocio
         Schema::create('regions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
             $table->integer('order')->nullable()->default(0);
             $table->boolean('active')->nullable()->default(1);
             $table->timestamps();
         });
+        Schema::create('region_translation', function(Blueprint $table) {
+            $table->increments('id');
+            $table->integer('region_id')->unsigned();
+            $table->string('locale')->index();
+            $table->string('name')->nullable();
+            $table->unique(['region_id','locale']);
+            $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
+        });
         Schema::create('cities', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('region_id')->unsigned();
-            $table->string('name')->nullable();
             $table->integer('order')->nullable()->default(0);
             $table->boolean('active')->nullable()->default(1);
             $table->timestamps();
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
         });
+        Schema::create('city_translation', function(Blueprint $table) {
+            $table->increments('id');
+            $table->integer('city_id')->unsigned();
+            $table->string('locale')->index();
+            $table->string('name')->nullable();
+            $table->unique(['city_id','locale']);
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+        });
         Schema::create('currencies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code')->nullable();
-            $table->string('name')->nullable();
-            $table->string('plural')->nullable();
             $table->enum('type', ['main', 'secondary'])->nullable()->default('secondary');
             $table->decimal('main_exchange', 10, 5)->nullable()->default(1);
             $table->timestamps();
+        });
+        Schema::create('currency_translation', function(Blueprint $table) {
+            $table->increments('id');
+            $table->integer('currency_id')->unsigned();
+            $table->string('locale')->index();
+            $table->string('name')->nullable();
+            $table->string('plural')->nullable();
+            $table->unique(['currency_id','locale']);
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
         });
         Schema::create('agencies', function (Blueprint $table) {
             $table->increments('id');
@@ -142,8 +163,11 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('contacts');
         Schema::dropIfExists('companies');
         Schema::dropIfExists('agencies');
+        Schema::dropIfExists('currency_translation');
         Schema::dropIfExists('currencies');
+        Schema::dropIfExists('city_translation');
         Schema::dropIfExists('cities');
+        Schema::dropIfExists('region_translation');
         Schema::dropIfExists('regions');
     }
 }

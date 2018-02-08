@@ -9,6 +9,12 @@ class City extends Model {
 	protected $table = 'cities';
 	public $timestamps = true;
 
+	public $translatedAttributes = ['name'];
+    protected $fillable = ['name', 'active', 'region_id'];
+
+    use \Dimsav\Translatable\Translatable;
+
+
 	/* Creating rules */
 	public static $rules_create = array(
 		'region_id'=>'required',

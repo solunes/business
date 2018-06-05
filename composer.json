@@ -11,7 +11,7 @@
     ],
     "require": {
         "ryanwinchester/hubspot-php": "^1.*",
-        "solunes/master": "^1.*"
+        "solunes/master": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.8.*"

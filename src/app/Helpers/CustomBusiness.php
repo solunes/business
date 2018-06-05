@@ -18,6 +18,7 @@ class CustomBusiness {
         $pm->level = 1;
         $pm->type = 'blank';
         $pm->menu_type = 'admin';
+        $pm->permission = 'reviews';
         $pm->icon = 'area-chart';
         $pm->name = 'Reportes';
         $pm->save();

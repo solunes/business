@@ -83,6 +83,7 @@ class NodesBusiness extends Migration
             $table->enum('type', ['customer', 'supplier', 'partner', 'other'])->nullable()->default('customer');
             $table->string('image')->nullable();
             $table->string('external_code')->nullable();
+            $table->integer('user_id')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

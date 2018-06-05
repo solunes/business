@@ -24,8 +24,16 @@ class Company extends Model {
 		'type'=>'required',
 	);
 
+    public function user() {
+        return $this->belongsTo('App\User');
+    }
+
     public function contacts() {
         return $this->hasMany('Solunes\Business\App\Contact');
+    }
+
+    public function sales() {
+        return $this->hasMany('Solunes\Sales\App\Sale');
     }
 
 }

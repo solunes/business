@@ -64,10 +64,10 @@ class MasterSeeder extends Seeder {
             $city_9_1 = \Solunes\Business\App\City::create(['name'=>'Cobija', 'region_id'=>$region_9->id, 'active'=>1]);
             $region_10 = \Solunes\Business\App\Region::create(['name'=>'Otro']);
             $city_10_1 = \Solunes\Business\App\City::create(['name'=>'Otra Ciudad', 'region_id'=>$region_10->id, 'active'=>1]);
-        }
         
-        if(config('business.seed_agencies')){
-            $place_1 = \Solunes\Business\App\Agency::create(['name'=>'Central','type'=>'central','address'=>'Dirección de muestra']);
+            if(config('business.seed_agencies')){
+                $place_1 = \Solunes\Business\App\Agency::create(['name'=>'Central','type'=>'central','address'=>'Dirección de muestra', 'region_id'=>$region_1->id, 'city_id'=>$city_1_1->id]);
+            }
         }
 
         // Usuarios

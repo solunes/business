@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "ryanwinchester/hubspot-php": "^1.*",
+        "ryanwinchester/hubspot-php": "1.*",
         "solunes/master": "*"
     },
     "require-dev": {

@@ -50,5 +50,10 @@ return [
     'type' => 'Tipo',
     'updated_at' => 'Fecha de Edición',
     'weight' => 'Weight',
-
+    'internal_url' => 'internal_url',
+    'product' => 'product',
+    'product_type' => 'product_type',
+    'slug' => 'slug',
+    'user' => 'user',
+    
 ];

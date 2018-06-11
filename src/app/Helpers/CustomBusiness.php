@@ -13,15 +13,15 @@ class CustomBusiness {
         $node_array['user'] = ['action_field'=>['edit']];
         \Business::changeNodeActionFields($node_array);
 
-        // Menu
-        $pm = new \Solunes\Master\App\Menu;
+        // Menu Reportes: En construcción
+        /*$pm = new \Solunes\Master\App\Menu;
         $pm->level = 1;
         $pm->type = 'blank';
         $pm->menu_type = 'admin';
         $pm->permission = 'reviews';
         $pm->icon = 'area-chart';
         $pm->name = 'Reportes';
-        $pm->save();
+        $pm->save();*/
         return 'After seed realizado correctamente.';
     }
        

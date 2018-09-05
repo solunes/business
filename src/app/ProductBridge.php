@@ -31,8 +31,12 @@ class ProductBridge extends Model {
         'address'=>'required',
     );
 
-    public function city() {
-        return $this->belongsTo('Solunes\Business\App\City');
+    public function product_bridge_variation() {
+        return $this->belongsToMany('\App\Variation', 'product_bridge_variation');
+    }
+
+    public function currency() {
+        return $this->belongsTo('Solunes\Business\App\Currency');
     }
 
     public function getRealPriceAttribute() {

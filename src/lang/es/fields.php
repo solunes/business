@@ -55,5 +55,12 @@ return [
     'product_type' => 'Tipo de Producto',
     'slug' => 'Slug',
     'user' => 'Usuario',
+    'new_price' => 'Nuevo Precio',
+    'product_bridge' => 'Producto (Puente)',
+    'product_bridge_stocks' => 'Stock de Productos (Puente)',
+    'product_bridge_variation' => 'Variaciones de Productos (Puente)',
+    'quantity' => 'Cantidad',
+    'value' => 'Valor',
+    'variation' => 'Variación',
 
 ];

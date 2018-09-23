@@ -50,10 +50,17 @@ return [
     'type' => 'Tipo',
     'updated_at' => 'Fecha de Edición',
     'weight' => 'Weight',
-    'internal_url' => 'internal_url',
-    'product' => 'product',
-    'product_type' => 'product_type',
-    'slug' => 'slug',
-    'user' => 'user',
-    
+    'internal_url' => 'Internal URL',
+    'product' => 'Product',
+    'product_type' => 'Producto Type',
+    'slug' => 'Slug',
+    'user' => 'User',
+    'new_price' => 'New Price',
+    'product_bridge' => 'Product (Bridge)',
+    'product_bridge_stocks' => 'Product Stock (Bridge)',
+    'product_bridge_variation' => 'Product Variation (Bridge)',
+    'quantity' => 'Quantity',
+    'value' => 'Value',
+    'variation' => 'Variation',
+
 ];

@@ -36,4 +36,12 @@ class ProcessController extends Controller {
     	}
     }
 
+    public function postCustomerRegistration(Request $request) {
+        $user = \Sales::userRegistration();
+        if(is_string($user)){
+       		return redirect($this->prev)->with('message_error', 'Hubo un error al finalizar su registro: '.$user);
+        }
+	    return redirect('inicio')->with('message_success', 'Su cuenta fue creada correctamente.');
+    }
+
 }

@@ -22,9 +22,18 @@ class ProcessController extends Controller {
 	  $this->prev = $url->previous();
 	}
 
-  public function getCalculateShipping($shipping_id, $city_id, $weight) {
-    $shipping_array = \Business::calculate_shipping_cost($shipping_id, $city_id, $weight);
-    return $shipping_array;
-  }
+    public function getCalculateShipping($shipping_id, $city_id, $weight) {
+	    $shipping_array = \Sales::calculate_shipping_cost($shipping_id, $city_id, $weight);
+	    return $shipping_array;
+    }
+
+    public function getCustomerLogout() {
+    	if(auth()->check()){
+	        Auth::logout();
+	        return redirect('inicio')->with('message_success', 'Su sesión fue cerrada correctamente.');
+    	} else {
+    		return redirect('inicio')->with('message_error', 'No tiene una sesión para cerrar.');
+    	}
+    }
 
 }

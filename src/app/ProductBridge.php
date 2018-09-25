@@ -32,7 +32,11 @@ class ProductBridge extends Model {
     );
 
     public function product_bridge_variation() {
-        return $this->belongsToMany('\App\Variation', 'product_bridge_variation');
+        if(config('solunes.product')){
+            return $this->belongsToMany('\Solunes\Product\App\Variation', 'product_bridge_variation');
+        } else {
+            return $this->belongsToMany('\App\Variation', 'product_bridge_variation');
+        }
     }
 
     public function currency() {

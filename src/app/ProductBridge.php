@@ -43,6 +43,16 @@ class ProductBridge extends Model {
         return $this->belongsTo('Solunes\Business\App\Currency');
     }
 
+    public function getProductUrlAttribute() {
+        $url = config('business.product_page').'/';
+        if(config('business.product_slug')){
+            $url .= $this->slug;
+        } else {
+            $url .= $this->id;
+        }
+        return $url;
+    }
+
     public function getRealPriceAttribute() {
         $price = $this->price;
         if($offer = $this->product_offer){

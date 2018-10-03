@@ -9,6 +9,9 @@ return [
 	'seed_agencies' => true,
 	'product_images' => true,
 	'main_exchange' => 6.96,
+	'products_page' => 'tienda',
+	'product_page' => 'producto',
+	'product_slug' => true,
 
 	// INTEGRATIONS
 	'gitlab' => false,

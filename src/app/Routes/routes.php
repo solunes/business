@@ -13,7 +13,7 @@
 
 Route::group(['prefix'=>'process'], function(){
     Route::get('/calculate-shipping/{shipping_id}/{city_id}/{weight}', 'ProcessController@getCalculateShipping');
-    Route::get('/customer-logout', 'ProcessController@getCustomerLogout');
+    Route::get('/customer-logout/{token}', 'ProcessController@getCustomerLogout');
     Route::post('/customer-register', 'ProcessController@postCustomerRegistration');
 });
 

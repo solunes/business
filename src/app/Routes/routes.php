@@ -17,7 +17,7 @@ Route::group(['prefix'=>'process'], function(){
     Route::post('/customer-register', 'ProcessController@postCustomerRegistration');
 });
 
-Route::group(['prefix'=>'gitlab'], function(){
+/*Route::group(['prefix'=>'gitlab'], function(){
     Route::get('/group-businesss/{group_name}', 'GitlabController@getGroupBusinesss');
     Route::get('/business/{business_name}/{group_name}', 'GitlabController@getBusiness');
     Route::get('/business-commits/{business_name}/{group_name}', 'GitlabController@getBusinessCommits');
@@ -28,4 +28,4 @@ Route::group(['prefix'=>'hubspot'], function(){
     Route::get('/import-contacts/{count?}', 'Integrations\HubspotController@getImportContacts');
     Route::get('/import-deals/{count?}', 'Integrations\HubspotController@getImportDeals');
     Route::post('/webhook', 'Integrations\HubspotController@postHubspotWebhook');
-});
+});*/

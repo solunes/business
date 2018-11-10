@@ -27,9 +27,9 @@ class ProcessController extends Controller {
 	    return $shipping_array;
     }
 
-    public function getCustomerLogout() {
+    public function getCustomerLogout($token) {
     	if(auth()->check()){
-	        Auth::logout();
+	        \Auth::logout();
 	        return redirect('inicio')->with('message_success', 'Su sesión fue cerrada correctamente.');
     	} else {
     		return redirect('inicio')->with('message_error', 'No tiene una sesión para cerrar.');

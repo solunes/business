@@ -12,6 +12,9 @@ return [
 	'products_page' => 'tienda',
 	'product_page' => 'producto',
 	'product_slug' => true,
+	'product_variations' => false,
+	'product_images' => false,
+
 
 	// INTEGRATIONS
 	'gitlab' => false,

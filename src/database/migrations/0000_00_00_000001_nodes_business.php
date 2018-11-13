@@ -146,15 +146,17 @@ class NodesBusiness extends Migration
             $table->unique(['product_bridge_id','locale']);
             $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
         });
-        Schema::create('product_bridge_variation', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('product_bridge_id')->unsigned();
-            $table->integer('variation_id')->unsigned();
-            $table->integer('quantity')->nullable();
-            $table->decimal('new_price',10,2)->nullable();
-            $table->string('value')->nullable();
-            $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
-        });
+        if(config('business.product_variations')){
+            Schema::create('product_bridge_variation', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('product_bridge_id')->unsigned();
+                $table->integer('variation_id')->unsigned();
+                $table->integer('quantity')->nullable();
+                $table->decimal('new_price',10,2)->nullable();
+                $table->string('value')->nullable();
+                $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
+            });
+        }
     }
 
     /**

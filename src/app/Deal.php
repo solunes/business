@@ -31,8 +31,16 @@ class Deal extends Model {
     public function deal_company() {
         return $this->belongsToMany('Solunes\Business\App\Company', 'deal_company');
     }
+    
+    public function deal_companys() {
+        return $this->belongsToMany('Solunes\Business\App\Company', 'deal_company');
+    }
 
     public function deal_contact() {
+        return $this->belongsToMany('Solunes\Business\App\Contact', 'deal_contact');
+    }
+    
+    public function deal_contacts() {
         return $this->belongsToMany('Solunes\Business\App\Contact', 'deal_contact');
     }
 

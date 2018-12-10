@@ -132,6 +132,7 @@ class NodesBusiness extends Migration
             $table->integer('currency_id')->unsigned();
             $table->decimal('price', 10, 2)->nullable()->default(0);
             $table->decimal('weight', 10, 2)->nullable()->default(0);
+            $table->boolean('active')->default(1);
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
         });

@@ -132,6 +132,15 @@ class NodesBusiness extends Migration
             $table->integer('currency_id')->unsigned();
             $table->decimal('price', 10, 2)->nullable()->default(0);
             $table->decimal('weight', 10, 2)->nullable()->default(0);
+            if(config('payments.sfv_version')>1||config('payments.discounts')){
+                $table->decimal('discount_price', 10, 2)->nullable();
+            }
+            if(config('payments.sfv_version')>1){
+                $table->string('economic_sin_activity')->nullable();
+                $table->string('product_sin_code')->nullable();
+                $table->string('product_internal_code')->nullable();
+                $table->string('product_serial_number')->nullable(); // Para linea blanca y celulares
+            }
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
         });

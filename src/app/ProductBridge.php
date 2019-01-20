@@ -10,25 +10,25 @@ class ProductBridge extends Model {
     public $timestamps = true;
     
     public $translatedAttributes = ['slug','name','internal_url', 'content'];
-    protected $fillable = ['product_type','product_id','image','currency_id','price','weight','slug','name','internal_url', 'content'];
+    protected $fillable = ['product_type','product_id','image','currency_id','price','weight','slug','name','internal_url','content','active'];
 
     use \Dimsav\Translatable\Translatable;
 
     /* Creating rules */
     public static $rules_create = array(
         'name'=>'required',
-        'type'=>'required',
-        'city_id'=>'required',
-        'address'=>'required',
+        'product_type'=>'required',
+        'product_id'=>'required',
+        'active'=>'required',
     );
 
     /* Updating rules */
     public static $rules_edit = array(
         'id'=>'required',
         'name'=>'required',
-        'type'=>'required',
-        'city_id'=>'required',
-        'address'=>'required',
+        'product_type'=>'required',
+        'product_id'=>'required',
+        'active'=>'required',
     );
 
     public function product_bridge_variation() {

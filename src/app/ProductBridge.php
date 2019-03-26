@@ -43,6 +43,10 @@ class ProductBridge extends Model {
         return $this->belongsTo('Solunes\Business\App\Currency');
     }
 
+    public function product_bridge_stocks() {
+        return $this->hasMany('Solunes\Inventory\App\ProductBridgeStock', 'parent_id');
+    }
+
     public function getProductUrlAttribute() {
         $url = config('business.product_page').'/';
         if(config('business.product_slug')){

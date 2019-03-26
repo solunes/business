@@ -142,6 +142,11 @@ class NodesBusiness extends Migration
                 $table->string('product_serial_number')->nullable(); // Para linea blanca y celulares
             }
             $table->boolean('active')->default(1);
+            if(config('solunes.inventory')){
+                $table->integer('initial_quantity')->default(0);
+                $table->integer('quantity')->default(0);
+                $table->boolean('stockable')->default(1);
+            }
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
         });

@@ -60,6 +60,7 @@ return [
     'product_bridge_stocks' => 'Stock de Productos (Puente)',
     'product_bridge_variation' => 'Variaciones de Productos (Puente)',
     'quantity' => 'Cantidad',
+    'stockable' => '¿Usa Stock?'
     'value' => 'Valor',
     'variation' => 'Variación',
 

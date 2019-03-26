@@ -34,4 +34,8 @@ class Agency extends Model {
         return $this->belongsTo('Solunes\Business\App\City');
     }
 
+    public function product_bridge_stocks() {
+        return $this->hasMany('Solunes\Inventory\App\ProductBridgeStock');
+    }
+
 }

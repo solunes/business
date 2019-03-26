@@ -143,8 +143,6 @@ class NodesBusiness extends Migration
             }
             $table->boolean('active')->default(1);
             if(config('solunes.inventory')){
-                $table->integer('initial_quantity')->default(0);
-                $table->integer('quantity')->default(0);
                 $table->boolean('stockable')->default(1);
             }
             $table->timestamps();

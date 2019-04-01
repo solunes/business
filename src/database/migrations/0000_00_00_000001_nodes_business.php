@@ -143,7 +143,7 @@ class NodesBusiness extends Migration
             }
             $table->boolean('active')->default(1);
             if(config('solunes.inventory')){
-                $table->boolean('stockable')->default(1);
+                $table->boolean('stockable')->nullable()->default(1);
             }
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');

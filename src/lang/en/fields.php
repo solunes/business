@@ -62,5 +62,13 @@ return [
     'quantity' => 'Quantity',
     'value' => 'Value',
     'variation' => 'Variation',
-
+    'batch' => 'Lote',
+    'country' => 'Pais',
+    'delivery_type' => 'Tipo de Envío',
+    'discount_price' => 'Precio de Descuento',
+    'economic_sin_activity' => 'Actividad Económica SIN',
+    'product_internal_code' => 'Código Interno de Producto',
+    'product_serial_number' => 'Número de Serie de Producto',
+    'product_sin_code' => 'Código de Impuestos de Producto',
+    
 ];

@@ -21,5 +21,8 @@ return array(
 	'storage' => 'Almacen',
 	'store' => 'Tienda',
 	'supplier' => 'Proveedor',
-
+	'digital' => 'Digital',
+	'link' => 'Link',
+	'normal' => 'Normal',
+	
 );

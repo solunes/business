@@ -17,9 +17,21 @@ class NodesBusiness extends Migration
             $table->integer('contact_id')->nullable()->after('status');
         });
         // Módulo General de Negocio
+        if(config('business.countries')){
+            Schema::create('countries', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('order')->nullable()->default(0);
+                $table->string('name')->nullable()->default(1);
+                $table->boolean('active')->nullable()->default(1);
+                $table->timestamps();
+            });
+        }
         Schema::create('regions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order')->nullable()->default(0);
+            if(config('business.countries')){
+                $table->integer('country_id')->nullable()->default(1);
+            }
             $table->boolean('active')->nullable()->default(1);
             $table->timestamps();
         });
@@ -72,6 +84,9 @@ class NodesBusiness extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->text('map')->nullable();
+            if(config('solunes.inventory')){
+                $table->boolean('stockable')->default(1);
+            }
             $table->timestamps();
         });
         Schema::create('companies', function (Blueprint $table) {
@@ -167,6 +182,9 @@ class NodesBusiness extends Migration
                 $table->integer('variation_id')->unsigned();
                 $table->integer('quantity')->nullable();
                 $table->decimal('new_price',10,2)->nullable();
+                if(config('solunes.inventory')){
+                    $table->boolean('stockable')->nullable()->default(1);
+                }
                 $table->string('value')->nullable();
                 $table->string('batch')->nullable();
                 $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
@@ -197,5 +215,6 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('cities');
         Schema::dropIfExists('region_translation');
         Schema::dropIfExists('regions');
+        Schema::dropIfExists('countries');
     }
 }

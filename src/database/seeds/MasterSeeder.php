@@ -15,6 +15,7 @@ class MasterSeeder extends Seeder {
     {
 
         // Módulo General de Empresa ERP
+        $node_countries = \Solunes\Master\App\Node::create(['name'=>'country', 'table_name'=>'countries', 'location'=>'business', 'folder'=>'parameters']);
         $node_region = \Solunes\Master\App\Node::create(['name'=>'region', 'location'=>'business', 'folder'=>'parameters']);
         $node_city = \Solunes\Master\App\Node::create(['name'=>'city', 'table_name'=>'cities', 'location'=>'business', 'folder'=>'parameters']);
         $node_currency = \Solunes\Master\App\Node::create(['name'=>'currency', 'table_name'=>'currencies', 'location'=>'business', 'folder'=>'parameters']);
@@ -44,6 +45,9 @@ class MasterSeeder extends Seeder {
         }
 
         if(config('business.seed_regions')){
+            if(config('business.countries')){
+                $country_1 = \Solunes\Business\App\Country::create(['name'=>'Bolivia']);
+            }
             $region_1 = \Solunes\Business\App\Region::create(['name'=>'La Paz']);
             $city_1_1 = \Solunes\Business\App\City::create(['name'=>'La Paz', 'region_id'=>$region_1->id, 'active'=>1]);
             $city_1_2 = \Solunes\Business\App\City::create(['name'=>'El Alto', 'region_id'=>$region_1->id, 'active'=>1]);

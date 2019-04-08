@@ -5,6 +5,7 @@ return [
 	// GENERAL
 	'after_seed' => true,
 	'seed_currencies' => true,
+	'countries' => false,
 	'seed_regions' => true,
 	'seed_agencies' => true,
 	'product_images' => true,
@@ -14,7 +15,6 @@ return [
 	'product_slug' => true,
 	'product_variations' => false,
 	'product_images' => false,
-
 
 	// INTEGRATIONS
 	'gitlab' => false,

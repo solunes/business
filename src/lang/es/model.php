@@ -13,6 +13,7 @@ return [
     'city' => 'Ciudad|Ciudades',
     'company' => 'Compañia|Compañias',
     'contact' => 'Contacto|Contactos',
+    'country' => 'Pais|Paises',
     'currency' => 'Moneda|Monedas',
     'deal' => 'Negocio|Negocios',
     'deal-company' => 'Compañia en Negocio|Compañias en Negocio',
@@ -20,6 +21,7 @@ return [
     'product-bridge' => 'Producto (Puente)|Productos (Puente)',
     'product-bridge-stock' => 'Stock de Producto (Puente)|Stock de Productos (Puente)',
     'product-bridge-variation' => 'Variación de Producto (Puente)|Variaciones de Producto (Puente)',
+    'product-variation' => 'Variación de Producto|Variaciones de Producto',
     'region' => 'Región|Regiones',
 
 ];

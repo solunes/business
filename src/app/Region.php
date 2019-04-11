@@ -27,6 +27,10 @@ class Region extends Model {
 		'active'=>'required',
 	);
     
+    public function country() {
+        return $this->belongsTo('Solunes\Business\App\Country');
+    }    
+
     public function cities() {
         return $this->hasMany('Solunes\Business\App\City');
     }

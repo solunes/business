@@ -176,18 +176,51 @@ class NodesBusiness extends Migration
             $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
         });
         if(config('business.product_variations')){
-            Schema::create('product_bridge_variation', function (Blueprint $table) {
+            Schema::create('variations', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('product_bridge_id')->unsigned();
-                $table->integer('variation_id')->unsigned();
-                $table->integer('quantity')->nullable();
-                $table->decimal('new_price',10,2)->nullable();
+                $table->enum('type', ['choice','quantities'])->default('choice');
+                $table->enum('subtype', ['normal', 'color', 'image'])->nullable()->default('normal');
                 if(config('solunes.inventory')){
                     $table->boolean('stockable')->nullable()->default(1);
                 }
-                $table->string('value')->nullable();
-                $table->string('batch')->nullable();
+                $table->integer('max_choices')->nullable()->default(0);
+                $table->boolean('optional')->nullable()->default(0);
+                $table->timestamps();
+            });
+            Schema::create('variation_translation', function(Blueprint $table) {
+                $table->increments('id');
+                $table->integer('variation_id')->unsigned();
+                $table->string('locale')->index();
+                $table->string('name')->nullable();
+                $table->string('label')->nullable();
+                $table->unique(['variation_id','locale']);
+                $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
+            });
+            Schema::create('variation_options', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('parent_id')->nullable();
+                $table->decimal('extra_price', 10, 2)->nullable()->default(0);
+                $table->integer('max_quantity')->nullable()->default(0);
+                $table->timestamps();
+            });
+            Schema::create('variation_option_translation', function(Blueprint $table) {
+                $table->increments('id');
+                $table->integer('variation_option_id')->unsigned();
+                $table->string('locale')->index();
+                $table->string('name')->nullable();
+                $table->string('description')->nullable();
+                $table->unique(['variation_option_id','locale']);
+                $table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
+            });
+            Schema::create('product_bridge_variation_options', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('product_bridge_id')->unsigned();
+                $table->integer('variation_id')->unsigned();
+                $table->integer('variation_option_id')->unsigned();
+                $table->timestamps();
                 $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
+                $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
+                $table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
             });
         }
     }
@@ -200,7 +233,12 @@ class NodesBusiness extends Migration
     public function down()
     {
         // Módulo General de Negocio
+        Schema::dropIfExists('product_bridge_variation_options');
         Schema::dropIfExists('product_bridge_variation');
+        Schema::dropIfExists('variation_option_translation');
+        Schema::dropIfExists('variation_options');
+        Schema::dropIfExists('variation_translation');
+        Schema::dropIfExists('variations');
         Schema::dropIfExists('product_bridge_translation');
         Schema::dropIfExists('product_bridges');
         Schema::dropIfExists('deal_contact');

@@ -39,6 +39,14 @@ class ProductBridge extends Model {
         }
     }
 
+    public function product_bridge_variations() {
+        return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption')->groupBy('variation_id');
+    }
+
+    public function product_bridge_variation_options() {
+        return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption');
+    }
+
     public function currency() {
         return $this->belongsTo('Solunes\Business\App\Currency');
     }

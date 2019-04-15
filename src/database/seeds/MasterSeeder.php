@@ -25,9 +25,12 @@ class MasterSeeder extends Seeder {
         $node_deal = \Solunes\Master\App\Node::create(['name'=>'deal', 'location'=>'business', 'folder'=>'business']);
         $node_deal_company = \Solunes\Master\App\Node::create(['name'=>'deal-company', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Company']);
         $node_deal_contact = \Solunes\Master\App\Node::create(['name'=>'deal-contact', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Contact']);
-        $node_product_bridge = \Solunes\Master\App\Node::create(['name'=>'product-bridge', 'location'=>'business', 'folder'=>'hidden']);
+        $node_product_bridge = \Solunes\Master\App\Node::create(['name'=>'product-bridge', 'location'=>'business']);
         if(config('business.product_variations')){
-            \Solunes\Master\App\Node::create(['name'=>'product-bridge-variation', 'location'=>'business', 'folder'=>'hidden', 'table_name'=>'product_bridge_variation', 'model'=>'\App\Variation', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
+            $node_variation = \Solunes\Master\App\Node::create(['name'=>'variation', 'location'=>'business', 'folder'=>'products']);
+            \Solunes\Master\App\Node::create(['name'=>'variation-option', 'type'=>'child', 'location'=>'business', 'folder'=>'products', 'parent_id'=>$node_variation->id]);
+            \Solunes\Master\App\Node::create(['name'=>'product-bridge-variation-option', 'type'=>'child', 'location'=>'business', 'parent_id'=>$node_product_bridge->id]);
+            //\Solunes\Master\App\Node::create(['name'=>'product-bridge-variation', 'table_name'=>'product_bridge_variation', 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
         }
 
         if(config('business.product_images')){

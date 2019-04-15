@@ -23,5 +23,7 @@ return [
     'product-bridge-variation' => 'Variación de Producto (Puente)|Variaciones de Producto (Puente)',
     'product-variation' => 'Variación de Producto|Variaciones de Producto',
     'region' => 'Región|Regiones',
-
+    'variation' => 'Variación|Variaciones',
+    'variation-option' => 'Opción de Variación|Opciones de Variación',
+    'product-bridge-variation-option' => 'Item de Variación de Producto|Items de Variación de Producto',
 ];

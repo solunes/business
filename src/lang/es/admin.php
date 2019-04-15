@@ -5,6 +5,8 @@ return array(
 	// MENU
 	'business' => 'Negocio',
 	'parameters' => 'Parámetros',
+	'products' => 'Productos',
+	'site' => 'Sitio',
 
 	// CUSTOM TRANS
 	'0' => 'No',
@@ -24,5 +26,9 @@ return array(
 	'digital' => 'Digital',
 	'link' => 'Link',
 	'normal' => 'Normal',
+	'choice' => 'Elección',
+	'color' => 'Color',
+	'image' => 'Imagen',
+	'quantities' => 'Cantidades',
 
 );

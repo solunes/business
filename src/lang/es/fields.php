@@ -41,6 +41,7 @@ return [
     'node' => 'ID de Nodo',
     'node_name' => 'Nombre de Nodo',
     'order' => 'Orden',
+    'parent_agency' => 'Agencia Matriz',
     'phone' => 'Teléfono',
     'plural' => 'Plural',
     'price' => 'Precio',

@@ -13,9 +13,11 @@ return [
 	'products_page' => 'tienda',
 	'product_page' => 'producto',
 	'product_slug' => true,
-	'product_variations' => false,
 	'product_images' => false,
-
+	'product_variations' => false,
+	'second_product_variations' => false,
+	'third_product_variations' => false,
+	
 	// INTEGRATIONS
 	'gitlab' => false,
 	'gitlab_api_key' => env('GITLAB_API_KEY'),

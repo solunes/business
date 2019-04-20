@@ -28,7 +28,7 @@ class Variation extends Model {
 	);
 			
     public function variation_options() {
-        return $this->hasMany('Solunes\Product\App\VariationOption','parent_id');
+        return $this->hasMany('Solunes\Business\App\VariationOption','parent_id');
     }
 	
 }

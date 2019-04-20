@@ -79,6 +79,7 @@ class NodesBusiness extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->enum('type', ['central', 'store', 'office', 'storage', 'other'])->nullable()->default('store');
+            $table->integer('parent_agency_id')->nullable();
             $table->integer('region_id')->nullable();
             $table->integer('city_id')->nullable();
             $table->string('address')->nullable();
@@ -157,7 +158,19 @@ class NodesBusiness extends Migration
                 $table->string('product_serial_number')->nullable(); // Para linea blanca y celulares
             }
             if(config('solunes.inventory')){
-                $table->boolean('stockable')->nullable()->default(1);
+                $table->boolean('stockable')->nullable()->default(0);
+            }
+            if(config('business.product_variations')){
+                $table->integer('variation_id')->nullable();
+                $table->integer('variation_option_id')->nullable();
+                if(config('business.second_product_variations')){
+                    $table->integer('variation_2_id')->nullable();
+                    $table->integer('variation_option_2_id')->nullable();
+                }
+                if(config('business.third_product_variations')){
+                    $table->integer('variation_3_id')->nullable();
+                    $table->integer('variation_option_3_id')->nullable();
+                }
             }
             $table->enum('delivery_type', ['normal','digital','link'])->default('normal');
             $table->boolean('active')->default(1);

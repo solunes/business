@@ -43,6 +43,10 @@ class ProductBridge extends Model {
         return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption')->groupBy('variation_id');
     }
 
+    public function stockable_product_bridge_variations() {
+        return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption')->groupBy('variation_id');
+    }
+
     public function product_bridge_variation_options() {
         return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption');
     }

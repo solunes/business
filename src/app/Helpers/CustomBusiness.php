@@ -61,7 +61,7 @@ class CustomBusiness {
     }
 
     public static function get_options_relation($submodel, $field, $subnode, $id = NULL) {
-        /*if($field->relation_cond=='account_concepts'){
+        /*if($field->relation_cond=='agency_stock_from'){
             $node_name = request()->segment(3);
             if($id){
                 $node = \Solunes\Master\App\Node::where('name', request()->segment(3))->first();
@@ -70,17 +70,12 @@ class CustomBusiness {
                 $submodel = $submodel->where('id', $model->account_id);
             } else {
                 if(auth()->check()&&auth()->user()->hasRole('admin')){
-                    if($node_name=='income'||$node_name=='accounts-receivable'){
-                        $submodel = $submodel->where('code', 'income_other');
-                    } else if($node_name=='expense'||$node_name=='accounts-payable'){
-                        $submodel = $submodel->whereIn('code', ['expense_operating_com','expense_operating_adm','expense_operating_dep','expense_operating_int','expense_other']);
-                    }
-                } else {
-                    if($node_name=='income'){
-                        $submodel = $submodel->where('code', 'income_other');
-                    } else if($node_name=='expense'){
-                        $submodel = $submodel->where('code', 'expense_other');
-                    }
+                    $parent_id = request()->input('parent_id');
+                    $product_bridge = \Solunes\Business\App\ProductBridge::where('id',$parent_id)->first();
+                    $array_ids = $product_bridge->product_bridge_variation_options()->whereHas('variation', function ($query) {
+                        $query->where('stockable', '1');
+                    })->lists('variation_id')->toArray();
+                    $submodel = $submodel->whereIn('id', $array_ids);
                 }
             }
         }*/

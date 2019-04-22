@@ -144,6 +144,7 @@ class NodesBusiness extends Migration
             $table->increments('id');
             $table->string('product_type')->nullable();
             $table->string('product_id')->nullable();
+            $table->integer('product_bridge_parent_id')->nullable();
             $table->string('image')->nullable();
             $table->integer('currency_id')->unsigned();
             $table->decimal('price', 10, 2)->nullable()->default(0);

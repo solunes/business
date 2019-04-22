@@ -43,6 +43,14 @@ class ProductBridge extends Model {
         return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption');
     }
 
+    public function product_bridge_parent() {
+        return $this->belongsTo('Solunes\Business\App\ProductBridge');
+    }
+
+    public function product_bridge_childs() {
+        return $this->hasMany('Solunes\Business\App\ProductBridge','product_bridge_parent_id');
+    }
+
     public function product() {
         return $this->belongsTo('Solunes\Product\App\Product');
     }

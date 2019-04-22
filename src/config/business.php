@@ -17,7 +17,8 @@ return [
 	'product_variations' => false,
 	'second_product_variations' => false,
 	'third_product_variations' => false,
-	
+	'online_store_agency_id' => 1,
+
 	// INTEGRATIONS
 	'gitlab' => false,
 	'gitlab_api_key' => env('GITLAB_API_KEY'),

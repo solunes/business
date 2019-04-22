@@ -55,6 +55,10 @@ class ProductBridge extends Model {
         return $this->hasMany('Solunes\Inventory\App\ProductBridgeStock', 'parent_id');
     }
 
+    public function last_product_bridge_stocks() {
+        return $this->hasMany('Solunes\Inventory\App\ProductBridgeStock', 'parent_id')->groupBy('parent_id','agency_id')->orderBy('date','DESC');
+    }
+
     public function getProductUrlAttribute() {
         $url = config('business.product_page').'/';
         if(config('business.product_slug')){

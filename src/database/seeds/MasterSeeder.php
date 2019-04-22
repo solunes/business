@@ -30,17 +30,15 @@ class MasterSeeder extends Seeder {
             $node_variation = \Solunes\Master\App\Node::create(['name'=>'variation', 'location'=>'business', 'folder'=>'products']);
             \Solunes\Master\App\Node::create(['name'=>'variation-option', 'type'=>'child', 'location'=>'business', 'folder'=>'products', 'parent_id'=>$node_variation->id]);
             \Solunes\Master\App\Node::create(['name'=>'product-bridge-variation-option', 'type'=>'child', 'location'=>'business', 'parent_id'=>$node_product_bridge->id]);
-            //\Solunes\Master\App\Node::create(['name'=>'product-bridge-variation', 'table_name'=>'product_bridge_variation', 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
+            \Solunes\Master\App\Node::create(['name'=>'product-variation', 'table_name'=>'product_variation', 'location'=>'product', 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
         }
 
-        if(config('business.product_images')){
-            $product_image = \Solunes\Master\App\ImageFolder::create(['site_id'=>1,'name'=>'product-bridge-image','extension'=>'jpg']);
-            \Solunes\Master\App\ImageSize::create(['parent_id'=>$product_image->id,'code'=>'normal','type'=>'resize','width'=>800,'height'=>NULL]);
-            \Solunes\Master\App\ImageSize::create(['parent_id'=>$product_image->id,'code'=>'thumb','type'=>'fit','width'=>370,'height'=>370]);
-            \Solunes\Master\App\ImageSize::create(['parent_id'=>$product_image->id,'code'=>'cart','type'=>'fit','width'=>80,'height'=>100]);
-            \Solunes\Master\App\ImageSize::create(['parent_id'=>$product_image->id,'code'=>'detail','type'=>'fit','width'=>570,'height'=>570]);
-            \Solunes\Master\App\ImageSize::create(['parent_id'=>$product_image->id,'code'=>'subdetail','type'=>'fit','width'=>120,'height'=>120]);
-        }
+        $image_folder = \Solunes\Master\App\ImageFolder::create(['site_id'=>1,'name'=>'product-bridge-image','extension'=>'jpg']);
+        \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'normal','type'=>'resize','width'=>800,'height'=>NULL]);
+        \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'thumb','type'=>'fit','width'=>370,'height'=>370]);
+        \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'cart','type'=>'fit','width'=>80,'height'=>100]);
+        \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'detail','type'=>'fit','width'=>570,'height'=>570]);
+        \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'subdetail','type'=>'fit','width'=>120,'height'=>120]);
 
         if(config('business.seed_currencies')){
             $currency_1 = \Solunes\Business\App\Currency::create(['name'=>'Bs.','type'=>'main','plural'=>'bolivianos','code'=>'BOB','main_exchange'=>1]);

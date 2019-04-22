@@ -196,6 +196,7 @@ class NodesBusiness extends Migration
                 if(config('solunes.inventory')){
                     $table->boolean('stockable')->nullable()->default(1);
                 }
+                $table->string('advanced')->nullable()->default(0);
                 $table->integer('max_choices')->nullable()->default(0);
                 $table->boolean('optional')->nullable()->default(0);
                 $table->timestamps();
@@ -225,6 +226,16 @@ class NodesBusiness extends Migration
                 $table->unique(['variation_option_id','locale']);
                 $table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
             });
+            Schema::create('product_variation', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('product_bridge_id')->nullable();
+                $table->integer('product_id')->nullable();
+                $table->integer('variation_id')->unsigned();
+                $table->integer('quantity')->nullable();
+                $table->decimal('new_price',10,2)->nullable();
+                $table->string('value')->nullable();
+                $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
+            });
             Schema::create('product_bridge_variation_options', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_bridge_id')->unsigned();
@@ -247,7 +258,7 @@ class NodesBusiness extends Migration
     {
         // Módulo General de Negocio
         Schema::dropIfExists('product_bridge_variation_options');
-        Schema::dropIfExists('product_bridge_variation');
+        Schema::dropIfExists('product_variation');
         Schema::dropIfExists('variation_option_translation');
         Schema::dropIfExists('variation_options');
         Schema::dropIfExists('variation_translation');

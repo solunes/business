@@ -32,15 +32,7 @@ class ProductBridge extends Model {
     );
 
     public function product_bridge_variation() {
-        if(config('solunes.product')){
-            return $this->belongsToMany('\Solunes\Product\App\Variation', 'product_bridge_variation');
-        } else {
-            return $this->belongsToMany('\App\Variation', 'product_bridge_variation');
-        }
-    }
-
-    public function product_bridge_variations() {
-        return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption')->groupBy('variation_id');
+        return $this->belongsToMany('Solunes\Business\App\Variation', 'product_variation', 'product_bridge_id', 'variation_id')->withPivot('product_id','quantity','new_price','value');
     }
 
     public function stockable_product_bridge_variations() {
@@ -49,6 +41,10 @@ class ProductBridge extends Model {
 
     public function product_bridge_variation_options() {
         return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption');
+    }
+
+    public function product() {
+        return $this->belongsTo('Solunes\Product\App\Product');
     }
 
     public function currency() {

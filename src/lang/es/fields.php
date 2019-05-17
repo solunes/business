@@ -85,5 +85,8 @@ return [
     'variations' => 'Variaciones',
     'variation_options' => 'Opciones de Variación',
     'variation_option' => 'Opción de Variación',
+    'advanced' => 'Avanzado',
+    'product_bridge_parent' => 'Puente de Producto',
+    'customer' => 'Cliente',
 
 ];

@@ -42,4 +42,8 @@ class Contact extends Model {
         return $this->hasOne('App\User');
     }
 
+    public function customer() {
+        return $this->belongsTo('Solunes\Customer\App\Customer');
+    }
+   
 }

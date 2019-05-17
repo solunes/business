@@ -105,6 +105,9 @@ class NodesBusiness extends Migration
         });
         Schema::create('contacts', function (Blueprint $table) {
             $table->increments('id');
+            if(config('solunes.customer')){
+                $table->integer('customer_id')->nullable();
+            }
             $table->string('name')->nullable();
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();

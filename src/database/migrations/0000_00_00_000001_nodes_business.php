@@ -47,6 +47,7 @@ class NodesBusiness extends Migration
             $table->increments('id');
             $table->integer('region_id')->unsigned();
             $table->integer('order')->nullable()->default(0);
+            $table->boolean('other_city')->nullable()->default(0);
             $table->boolean('active')->nullable()->default(1);
             $table->timestamps();
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');

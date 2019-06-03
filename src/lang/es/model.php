@@ -26,5 +26,7 @@ return [
     'variation' => 'Variación|Variaciones',
     'variation-option' => 'Opción de Variación|Opciones de Variación',
     'product-bridge-variation-option' => 'Item de Variación de Producto|Items de Variación de Producto',
+    'holiday' => 'holiday',
+    'labor-day' => 'labor-day',
 
 ];

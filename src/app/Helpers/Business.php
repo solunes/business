@@ -193,5 +193,72 @@ class Business {
             return 0;
         }
     }
+   
+    public static function getIpData($ip) {
+        $key = config('business.ipapi_key');
+        $url = 'http://api.ipstack.com/'.$ip.'?access_key='.$key.'&format=1'; // asmx URL of WSDL
+        $headers = [];
+        $client = new \GuzzleHttp\Client(['header' => $headers]);
+        $response  = $client->get($url);
+        $content = $response->getBody()->getContents();
+        if ($response->getStatusCode() == 200) {
+            return json_decode($content, true);
+        } else {
+            return [];
+        }
+    }
+   
+    public static function processIpData($ip) {
+        $array = \Business::getIpData($ip);
+        if($array&&isset($array['ip'])){
+            \Log::info('IP Encontrado: '.json_encode($array));
+            $region = NULL;
+            if($array['region_code']==NULL){
+                $region = \Solunes\Business\App\Region::where('code','other')->first();
+            }
+            $city = NULL;
+            if($array['city']==NULL){
+                $city = \Solunes\Business\App\City::where('other_city',1)->first();
+            }
+            if(config('business.countries')){
+                if($array['country_code']){
+                    if(!$country = \Solunes\Business\App\Country::where('code',$array['country_code'])->first()){
+                        $languages = '';
+                        if($array['location']['languages']){
+                            foreach($array['location']['languages'] as $key => $language){
+                                if($key>0){
+                                    $languages .= ',';
+                                }
+                                $languages .= $language['code'];
+                            }
+                        }
+                        $country = \Solunes\Business\App\Country::create(['name'=>$array['country_name'],'code'=>$array['country_code'],'continent'=>$array['continent_code'],'phone'=>$array['location']['calling_code'],'currency_code'=>NULL,'languages'=>$languages]);
+                    }
+                } else {
+                    $country = \Solunes\Business\App\Country::where('code','other')->first();
+                }
+                if(!$region&&!$region = \Solunes\Business\App\Region::where('country_id',$country->id)->where('code',$array['region_code'])->first()){
+                    $region = \Solunes\Business\App\Region::create(['country_id'=>$country->id,'name'=>$array['region_name'],'code'=>$array['region_code']]);
+                }
+            } else {
+                if(!$region&&!$region = \Solunes\Business\App\Region::where('code',$array['region_code'])->first()){
+                    $region = \Solunes\Business\App\Region::create(['name'=>$array['region_name'],'code'=>$array['region_code']]);
+                }
+            }
+            if(!$city&&!$city = \Solunes\Business\App\City::where('region_id',$region->id)->whereTranslation('name',$array['city'])->first()){
+                $city = \Solunes\Business\App\City::create(['region_id'=>$region->id,'name'=>$array['city'],'latitude'=>$array['latitude'],'longitude'=>$array['longitude']]);
+            }
+            \Log::info('IP Encontrado: CountryID '.$country->id.' - RegionID '.$region->id.' -  CityID '.$city->id);
+        } else {
+            \Log::info('IP NO Encontrado: '.json_encode($array));
+        }
+    }
+   
+    public static function testIpData() {
+        $ips = ['200.105.221.91','2.17.35.255','134.201.250.155'];
+        foreach($ips as $ip){
+            \Business::processIpData($ip);
+        }
+    }
 
 }

@@ -24,5 +24,8 @@ class TruncateSeeder extends Seeder {
         \Solunes\Business\App\City::truncate();
         \Solunes\Business\App\RegionTranslation::truncate();
         \Solunes\Business\App\Region::truncate();
+        \Solunes\Business\App\Country::truncate();
+        \Solunes\Business\App\LaborDay::truncate();
+        \Solunes\Business\App\Holiday::truncate();
     }
 }

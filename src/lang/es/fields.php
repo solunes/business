@@ -88,5 +88,18 @@ return [
     'advanced' => 'Avanzado',
     'product_bridge_parent' => 'Puente de Producto',
     'customer' => 'Cliente',
+    'continent' => 'Continente',
+    'currency_code' => 'Código de Moneda',
+    'day' => 'Día',
+    'end_date' => 'Fecha Final',
+    'end_time' => 'Hora Final',
+    'initial_date' => 'Fecha Inicial',
+    'initial_time' => 'Hora Inicial',
+    'languages' => 'Idiomas',
+    'latitude' => 'Latitud',
+    'longitude' => 'Longitud',
+    'native_name' => 'Nombre Nativo',
+    'other_city' => 'Otra Ciudad',
+    'recurrent' => 'Recurrente',
 
 ];

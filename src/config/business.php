@@ -6,7 +6,11 @@ return [
 	'after_seed' => true,
 	'seed_currencies' => true,
 	'countries' => false,
+	'holidays' => false,
+	'labor_days' => false,
+	'seed_countries' => false,
 	'seed_regions' => true,
+	'seed_bolivia' => true,
 	'seed_agencies' => true,
 	'product_images' => true,
 	'main_exchange' => 6.96,
@@ -20,6 +24,7 @@ return [
 	'online_store_agency_id' => 1,
 
 	// INTEGRATIONS
+	'ipapi_key' => '8b587af1fe91d0a3f3ac3d9aaaf69cc5',
 	'gitlab' => false,
 	'gitlab_api_key' => env('GITLAB_API_KEY'),
 	'hubspot' => false,

@@ -17,12 +17,38 @@ class NodesBusiness extends Migration
             $table->integer('contact_id')->nullable()->after('status');
         });
         // Módulo General de Negocio
+        if(config('business.holidays')||config('solunes.staff')){
+            Schema::create('holidays', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name')->nullable();
+                $table->boolean('recurrent')->default(0);
+                $table->date('initial_date')->nullable();
+                $table->date('end_date')->nullable();
+                $table->timestamps();
+            });
+        }
+        if(config('business.labor_days')||config('solunes.staff')){
+            Schema::create('labor_days', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name')->nullable();
+                $table->enum('day', ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'])->nullable();
+                $table->time('initial_time')->nullable();
+                $table->time('end_time')->nullable();
+                $table->timestamps();
+            });
+        }
         if(config('business.countries')){
             Schema::create('countries', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('order')->nullable()->default(0);
-                $table->string('name')->nullable()->default(1);
+                $table->enum('continent', ['AF','AN','AS','EU','NA','OC','SA','other'])->nullable()->default('SA');
+                $table->string('name')->nullable();
+                $table->string('native_name')->nullable();
+                $table->string('code')->nullable();
                 $table->boolean('active')->nullable()->default(1);
+                $table->string('phone')->nullable();
+                $table->string('currency_code')->nullable();
+                $table->string('languages')->nullable();
                 $table->timestamps();
             });
         }
@@ -32,6 +58,7 @@ class NodesBusiness extends Migration
             if(config('business.countries')){
                 $table->integer('country_id')->nullable()->default(1);
             }
+            $table->string('code')->nullable();
             $table->boolean('active')->nullable()->default(1);
             $table->timestamps();
         });
@@ -45,12 +72,13 @@ class NodesBusiness extends Migration
         });
         Schema::create('cities', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('region_id')->unsigned();
+            $table->integer('region_id')->nullable();
             $table->integer('order')->nullable()->default(0);
             $table->boolean('other_city')->nullable()->default(0);
             $table->boolean('active')->nullable()->default(1);
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->timestamps();
-            $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
         });
         Schema::create('city_translation', function(Blueprint $table) {
             $table->increments('id');
@@ -283,5 +311,7 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('region_translation');
         Schema::dropIfExists('regions');
         Schema::dropIfExists('countries');
+        Schema::dropIfExists('labor_days');
+        Schema::dropIfExists('holidays');
     }
 }

@@ -147,7 +147,9 @@ class NodesBusiness extends Migration
                 $table->string('lastname')->nullable();
                 $table->string('email')->nullable();
                 $table->enum('type', ['customer', 'supplier', 'partner', 'employee', 'other'])->nullable()->default('customer');
-                $table->integer('company_id')->nullable();
+                if(config('business.companies')){
+                    $table->integer('company_id')->nullable();
+                }
                 $table->string('jobtitle')->nullable();
                 $table->string('phone')->nullable();
                 $table->string('external_code')->nullable();
@@ -167,18 +169,22 @@ class NodesBusiness extends Migration
                 $table->string('external_code')->nullable();
                 $table->timestamps();
             });
-            Schema::create('deal_company', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('deal_id')->nullable();
-                $table->integer('company_id')->nullable();
-                $table->timestamps();
-            });
-            Schema::create('deal_contact', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('deal_id')->nullable();
-                $table->integer('contact_id')->nullable();
-                $table->timestamps();
-            });
+            if(config('business.companies')){
+                Schema::create('deal_company', function (Blueprint $table) {
+                    $table->increments('id');
+                    $table->integer('deal_id')->nullable();
+                    $table->integer('company_id')->nullable();
+                    $table->timestamps();
+                });
+            }
+            if(config('business.contacts')){
+                Schema::create('deal_contact', function (Blueprint $table) {
+                    $table->increments('id');
+                    $table->integer('deal_id')->nullable();
+                    $table->integer('contact_id')->nullable();
+                    $table->timestamps();
+                });
+            }
         }
         Schema::create('product_bridges', function (Blueprint $table) {
             $table->increments('id');

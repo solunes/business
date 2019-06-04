@@ -15,6 +15,6 @@ Route::group(['prefix'=>'admin'], function(){
     
     Route::get('search-product/{id?}', 'CustomAdminController@searchProduct');
     Route::get('generate-barcodes-pdf', 'CustomAdminController@generateBarcodesPdf');
-    Route::get('check-product/{id}', 'CustomAdminController@getCheckProduct');
+    Route::get('check-product/{id}/{currency_id}', 'CustomAdminController@getCheckProduct');
 
 });

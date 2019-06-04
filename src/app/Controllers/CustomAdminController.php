@@ -63,14 +63,19 @@ class CustomAdminController extends Controller {
         return \PDF::loadView('business::pdf.product-barcodes', ['products'=>$array])->setPaper('letter')->setOption('margin-top', 12)->setOption('margin-left', 3)->setOption('margin-right', 0)->setOption('margin-bottom', 0)->stream('bulk_barcode.pdf');
 	}
 
-	public function getCheckProduct($id) {
-		$item = \Solunes\Business\App\ProductBridge::find($id);
+	public function getCheckProduct($id, $currency_id = 1) {
+        $item = \Solunes\Business\App\ProductBridge::find($id);
+        $currency = \Solunes\Business\App\Currency::find($currency_id);
 		if(config('solunes.inventory')){
 			$quantity = $item->total_stock;
 		} else {
 			$quantity = 10000;
 		}
-      	return ['name'=>$item->name, 'price'=>$item->price, 'no_invoice_price'=>$item->price, 'currency'=>$item->currency->name, 'quantity'=>$quantity];
+        $price = $item->price;
+        if($item->currency_id!=$currency->id){
+            $price = $price/$currency->main_exchange;
+        }
+      	return ['name'=>$item->name, 'price'=>$price, 'no_invoice_price'=>$price, 'currency'=>$currency->name, 'quantity'=>$quantity];
 	}
 
 }

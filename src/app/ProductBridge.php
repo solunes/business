@@ -55,6 +55,10 @@ class ProductBridge extends Model {
         return $this->belongsTo('Solunes\Product\App\Product');
     }
 
+    public function category() {
+        return $this->belongsTo('Solunes\Product\App\Category');
+    }
+
     public function currency() {
         return $this->belongsTo('Solunes\Business\App\Currency');
     }
@@ -65,6 +69,14 @@ class ProductBridge extends Model {
 
     public function last_product_bridge_stocks() {
         return $this->hasMany('Solunes\Inventory\App\ProductBridgeStock', 'parent_id')->groupBy('parent_id','agency_id')->orderBy('date','DESC');
+    }
+
+    public function getTotalStockAttribute() {
+        if(count($this->product_bridge_stocks)>0){
+            return $this->product_bridge_stocks->sum('quantity');
+        } else {
+            return 0;
+        }
     }
 
     public function getProductUrlAttribute() {

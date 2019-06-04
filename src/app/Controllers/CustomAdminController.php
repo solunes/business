@@ -29,60 +29,48 @@ class CustomAdminController extends Controller {
       	return view('business::list.dashboard', $array);
 	}
 
-	/* Módulo de Proyectos */
-
-	public function allBusinesss() {
-		$array['items'] = \Solunes\Business\App\Business::get();
-      	return view('business::list.businesss', $array);
+    public function searchProduct($id = NULL) {
+    	$array = ['i'=>NULL, 'dt'=>'create'];
+        $categories = \Solunes\Product\App\Category::has('product_bridges')->with('product_bridges')->orderBy('name', 'ASC')->get();
+        $product_options = [''=>'-'];
+        foreach($categories as $category){
+            foreach($category->products as $product){
+            	$name = $product->name;
+            	if(config('business.product_barcode')){
+            		$name .= ' ('.$product->barcode.')';
+            	}
+                $product_options[$category->name][$product->id] = $name;
+            }
+        }
+		$array['products'] = $product_options;
+    	if($id){
+    		$array['product'] = \Solunes\Business\App\ProductBridge::find($id);
+    	} else {
+    		$array ['product'] = NULL;
+    	}
+      	return view('business::item.search-product', $array);
 	}
 
-	public function findBusiness($id, $tab = 'description') {
-		if($item = \Solunes\Business\App\Business::find($id)){
-			$array = ['item'=>$item, 'tab'=>$tab];
-      		return view('business::item.business', $array);
-		} else {
-			return redirect($this->prev)->with('message_error', 'Item no encontrado');
-		}
+    public function generateBarcodesPdf() {
+    	$products = \Solunes\Product\App\Product::where('printed', 0)->get();
+    	$array = [];
+    	foreach($products as $product){
+    		$code = \Asset::generate_barcode_image($product->barcode);
+    		$array[] = ['image'=>'<img src="data:image/png;base64,'.$code.'" />', 'name' => $product->name];
+    		$product->printed = 1;
+    		$product->save();
+    	}
+        return \PDF::loadView('business::pdf.product-barcodes', ['products'=>$array])->setPaper('letter')->setOption('margin-top', 12)->setOption('margin-left', 3)->setOption('margin-right', 0)->setOption('margin-bottom', 0)->stream('bulk_barcode.pdf');
 	}
 
-	public function findBusinessTask($id) {
-		if($item = \Solunes\Business\App\BusinessTask::find($id)){
-			$array = ['item'=>$item];
-      		return view('business::item.business-task', $array);
+	public function getCheckProduct($id) {
+		$item = \Solunes\Business\App\ProductBridge::find($id);
+		if(config('solunes.inventory')){
+			$quantity = $item->total_stock;
 		} else {
-			return redirect($this->prev)->with('message_error', 'Item no encontrado');
+			$quantity = 10000;
 		}
-	}
-
-	public function findProjecIssue($id) {
-		if($item = \Solunes\Business\App\BusinessIssue::find($id)){
-			$array = ['item'=>$item];
-      		return view('business::item.business-issue', $array);
-		} else {
-			return redirect($this->prev)->with('message_error', 'Item no encontrado');
-		}
-	}
-
-	public function allWikis($business_type_id = NULL, $wiki_type_id = NULL) {
-		$array['business_type_id'] = $business_type_id;
-		$array['wiki_type_id'] = $wiki_type_id;
-		if($business_type_id&&$wiki_type_id){
-			$array['items'] = \Solunes\Business\App\Wiki::where('business_type_id',$business_type_id)->where('wiki_type_id',$wiki_type_id)->get();
-		} else if($business_type_id){
-			$array['items'] = \Solunes\Business\App\WikiType::get();
-		} else {
-			$array['items'] = \Solunes\Business\App\BusinessType::get();
-		}
-      	return view('business::list.wikis', $array);
-	}
-
-	public function findWiki($id) {
-		if($item = \Solunes\Business\App\Wiki::find($id)){
-			$array = ['item'=>$item];
-      		return view('business::item.wiki', $array);
-		} else {
-			return redirect($this->prev)->with('message_error', 'Item no encontrado');
-		}
+      	return ['name'=>$item->name, 'price'=>$item->price, 'no_invoice_price'=>$item->price, 'currency'=>$item->currency->name, 'quantity'=>$quantity];
 	}
 
 }

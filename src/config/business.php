@@ -14,6 +14,7 @@ return [
 	'seed_agencies' => true,
 	'product_images' => true,
 	'main_exchange' => 6.96,
+	'product_barcode' => false,
 	'products_page' => 'tienda',
 	'product_page' => 'producto',
 	'product_slug' => true,
@@ -22,6 +23,9 @@ return [
 	'second_product_variations' => false,
 	'third_product_variations' => false,
 	'online_store_agency_id' => 1,
+	'companies' => false,
+	'contacts' => false,
+	'deals' => false,
 
 	// INTEGRATIONS
 	'ipapi_key' => '8b587af1fe91d0a3f3ac3d9aaaf69cc5',

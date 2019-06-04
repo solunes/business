@@ -28,11 +28,17 @@ class MasterSeeder extends Seeder {
         $node_city = \Solunes\Master\App\Node::create(['name'=>'city', 'table_name'=>'cities', 'location'=>'business', 'folder'=>'parameters']);
         $node_currency = \Solunes\Master\App\Node::create(['name'=>'currency', 'table_name'=>'currencies', 'location'=>'business', 'folder'=>'parameters']);
         $node_agency = \Solunes\Master\App\Node::create(['name'=>'agency', 'table_name'=>'agencies', 'location'=>'business', 'folder'=>'parameters']);
-        $node_company = \Solunes\Master\App\Node::create(['name'=>'company', 'table_name'=>'companies', 'location'=>'business', 'folder'=>'business']);
-        $node_contact = \Solunes\Master\App\Node::create(['name'=>'contact', 'location'=>'business', 'folder'=>'business']);
-        $node_deal = \Solunes\Master\App\Node::create(['name'=>'deal', 'location'=>'business', 'folder'=>'business']);
-        $node_deal_company = \Solunes\Master\App\Node::create(['name'=>'deal-company', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Company']);
-        $node_deal_contact = \Solunes\Master\App\Node::create(['name'=>'deal-contact', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Contact']);
+        if(config('business.companies')){
+            $node_company = \Solunes\Master\App\Node::create(['name'=>'company', 'table_name'=>'companies', 'location'=>'business', 'folder'=>'business']);
+        }
+        if(config('business.contacts')){
+            $node_contact = \Solunes\Master\App\Node::create(['name'=>'contact', 'location'=>'business', 'folder'=>'business']);
+        }
+        if(config('business.deals')){
+            $node_deal = \Solunes\Master\App\Node::create(['name'=>'deal', 'location'=>'business', 'folder'=>'business']);
+            $node_deal_company = \Solunes\Master\App\Node::create(['name'=>'deal-company', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Company']);
+            $node_deal_contact = \Solunes\Master\App\Node::create(['name'=>'deal-contact', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Contact']);
+        }
         $node_product_bridge = \Solunes\Master\App\Node::create(['name'=>'product-bridge', 'location'=>'business']);
         if(config('business.product_variations')){
             $node_variation = \Solunes\Master\App\Node::create(['name'=>'variation', 'location'=>'business', 'folder'=>'products']);

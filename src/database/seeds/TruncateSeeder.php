@@ -15,8 +15,12 @@ class TruncateSeeder extends Seeder {
     {
         \Solunes\Business\App\ProductBridgeTranslation::truncate();
         \Solunes\Business\App\ProductBridge::truncate();
-        \Solunes\Business\App\Contact::truncate();
-        \Solunes\Business\App\Company::truncate();
+        if(config('business.contacts')){
+            \Solunes\Business\App\Contact::truncate();
+        }
+        if(config('business.companies')){
+            \Solunes\Business\App\Company::truncate();
+        }
         \Solunes\Business\App\Agency::truncate();
         \Solunes\Business\App\CurrencyTranslation::truncate();
         \Solunes\Business\App\Currency::truncate();

@@ -13,7 +13,8 @@
 
 Route::group(['prefix'=>'admin'], function(){
     
-    // Módulo de Reportes
-    //Route::get('business-report', 'ReportController@getBusinessReport');
+    Route::get('search-product/{id?}', 'CustomAdminController@searchProduct');
+    Route::get('generate-barcodes-pdf', 'CustomAdminController@generateBarcodesPdf');
+    Route::get('check-product/{id}', 'CustomAdminController@getCheckProduct');
 
 });

@@ -101,5 +101,6 @@ return [
     'native_name' => 'Nombre Nativo',
     'other_city' => 'Otra Ciudad',
     'recurrent' => 'Recurrente',
+    'category' => 'Categoría',
 
 ];

@@ -14,7 +14,9 @@ class NodesBusiness extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('agency_id')->nullable()->after('status');
-            $table->integer('contact_id')->nullable()->after('status');
+            if(config('business.contacts')){
+                $table->integer('contact_id')->nullable()->after('status');
+            }
         });
         // Módulo General de Negocio
         if(config('business.holidays')||config('solunes.staff')){

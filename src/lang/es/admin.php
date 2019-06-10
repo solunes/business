@@ -44,5 +44,9 @@ return array(
 	'thursday' => 'Jueves',
 	'tuesday' => 'Martes',
 	'wednesday' => 'Miércoles',
+	'credit' => 'Crédito',
+	'reservation' => 'Reserva',
+	'subscription' => 'Suscripción',
+	'ticket' => 'Ticket',
 
 );

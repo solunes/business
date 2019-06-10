@@ -225,7 +225,10 @@ class NodesBusiness extends Migration
                     $table->integer('variation_option_3_id')->nullable();
                 }
             }
-            $table->enum('delivery_type', ['normal','digital','link'])->default('normal');
+            $table->enum('delivery_type', ['normal','digital','subscription','reservation','ticket','credit'])->nullable()->default('normal');
+            if(config('product.product_url')){
+                $table->string('product_url')->nullable();
+            }
             $table->boolean('active')->default(1);
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
@@ -238,6 +241,9 @@ class NodesBusiness extends Migration
             $table->string('slug')->nullable();
             $table->string('internal_url')->nullable();
             $table->text('content')->nullable();
+            if(config('product.product_sold_content')){
+                $table->text('sold_content')->nullable();
+            }
             $table->unique(['product_bridge_id','locale']);
             $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
         });

@@ -102,5 +102,6 @@ return [
     'other_city' => 'Otra Ciudad',
     'recurrent' => 'Recurrente',
     'category' => 'Categoría',
+    'product_url' => 'URL de Producto',
 
 ];

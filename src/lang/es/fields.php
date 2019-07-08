@@ -108,5 +108,6 @@ return [
     'level' => 'Nivel',
     'min_quantity' => 'Cantidad Mínima',
     'new_value' => 'Nuevo Valor',
+    'agency_type' => 'Tipo de Agencia',
 
 ];

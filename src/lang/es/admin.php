@@ -51,5 +51,9 @@ return array(
 	'discount' => 'Descuento',
 	'increment' => 'Incremento',
 	'percentage' => 'Porcentaje',
+	'category' => 'Categoría',
+	'general' => 'General',
+	'maintain' => 'Mantener',
+	'product' => 'Producto',
 
 );

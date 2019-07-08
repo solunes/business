@@ -10,6 +10,7 @@ return [
     */
 
     'agency' => 'Agencia|Agencias',
+    'category' => 'Categoria|Categorias',
     'city' => 'Ciudad|Ciudades',
     'company' => 'Compañia|Compañias',
     'contact' => 'Contacto|Contactos',
@@ -18,6 +19,7 @@ return [
     'deal' => 'Negocio|Negocios',
     'deal-company' => 'Compañia en Negocio|Compañias en Negocio',
     'deal-contact' => 'Contacto en Negocio|Contactos en Negocio',
+    'pricing-rule' => 'Regla de Precio|Reglas de Precio',
     'product-bridge' => 'Producto (Puente)|Productos (Puente)',
     'product-bridge-stock' => 'Stock de Producto (Puente)|Stock de Productos (Puente)',
     'product-bridge-variation' => 'Variación de Producto (Puente)|Variaciones de Producto (Puente)',

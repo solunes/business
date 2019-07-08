@@ -26,6 +26,10 @@ class Agency extends Model {
 		'address'=>'required',
 	);
     
+    public function parent() {
+        return $this->belongsTo('Solunes\Business\App\Agency', 'parent_id');
+    }     
+
     public function region() {
         return $this->belongsTo('Solunes\Business\App\Region');
     } 

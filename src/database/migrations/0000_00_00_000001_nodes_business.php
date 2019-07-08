@@ -108,11 +108,14 @@ class NodesBusiness extends Migration
         });
         Schema::create('agencies', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('parent_id')->nullable();
+            $table->integer('level')->nullable();
+            $table->integer('order')->nullable()->default(0);
             $table->string('name')->nullable();
             $table->enum('type', ['central', 'store', 'office', 'storage', 'other'])->nullable()->default('store');
-            $table->integer('parent_agency_id')->nullable();
             $table->integer('region_id')->nullable();
             $table->integer('city_id')->nullable();
+            $table->string('city_other')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->text('map')->nullable();
@@ -186,13 +189,33 @@ class NodesBusiness extends Migration
                 });
             }
         }
+        Schema::create('categories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('parent_id')->nullable();
+            $table->integer('level')->nullable();
+            $table->integer('order')->nullable()->default(0);
+            $table->string('slug')->nullable();
+            if(config('product.category_image')){
+                $table->string('image')->nullable();
+            }
+            $table->timestamps();
+        });
+        Schema::create('category_translation', function(Blueprint $table) {
+            $table->increments('id');
+            $table->integer('category_id')->unsigned();
+            $table->string('locale')->index();
+            $table->string('name')->nullable();
+            if(config('product.category_description')){
+                $table->text('description')->nullable();
+            }
+            $table->unique(['category_id','locale']);
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+        });
         Schema::create('product_bridges', function (Blueprint $table) {
             $table->increments('id');
             $table->string('product_type')->nullable();
             $table->string('product_id')->nullable();
-            if(config('solunes.product')){
-                $table->integer('category_id')->nullable();
-            }
+            $table->integer('category_id')->nullable();
             $table->integer('product_bridge_parent_id')->nullable();
             $table->string('image')->nullable();
             if(config('business.product_barcode')){
@@ -306,6 +329,21 @@ class NodesBusiness extends Migration
                 $table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
             });
         }
+        if(config('business.pricing_rules')){
+            Schema::create('pricing_rules', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('category_id')->nullable();
+                $table->integer('product_bridge_id')->nullable();
+                $table->enum('agency_type', ['maintain', 'central', 'store', 'office', 'storage', 'other'])->nullable()->default('maintain');
+                $table->enum('type', ['normal', 'percentage'])->nullable()->default('normal');
+                $table->enum('product', ['general', 'category','product'])->nullable()->default('product');
+                $table->boolean('active')->nullable()->default(1);
+                $table->integer('min_quantity')->nullable();
+                $table->integer('max_quantity')->nullable();
+                $table->decimal('value', 10, 2)->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -316,6 +354,7 @@ class NodesBusiness extends Migration
     public function down()
     {
         // Módulo General de Negocio
+        Schema::dropIfExists('pricing_rules');
         Schema::dropIfExists('product_bridge_variation_options');
         Schema::dropIfExists('product_variation');
         Schema::dropIfExists('variation_option_translation');
@@ -324,6 +363,8 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('variations');
         Schema::dropIfExists('product_bridge_translation');
         Schema::dropIfExists('product_bridges');
+        Schema::dropIfExists('category_translation');
+        Schema::dropIfExists('categories');
         Schema::dropIfExists('deal_contact');
         Schema::dropIfExists('deal_company');
         Schema::dropIfExists('deals');

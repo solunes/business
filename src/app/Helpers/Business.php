@@ -253,7 +253,27 @@ class Business {
             \Log::info('IP NO Encontrado: '.json_encode($array));
         }
     }
-   
+     
+    public static function getProductPrice($product_bridge, $quantity) {
+        $price = $product_bridge->real_price;
+        $range_price = \Solunes\Business\App\RangePrice::where('product','product')->where('product_bridge_id', $product_bridge->id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+        if(!$range_price){
+            $range_price = \Solunes\Business\App\RangePrice::where('product','category')->where('category_id', $product_bridge->category_id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+            if(!$range_price){
+                $range_price = \Solunes\Business\App\RangePrice::where('product','general')->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+            }
+        }
+        if($range_price){
+            if($range_price->type=='normal'){
+                $price -= $range_price->value;
+            } else {
+                $price = $price*$range_price->value;
+            }
+        }
+        // TODO: Custom pricing rules
+        return $price;
+    }
+
     public static function testIpData() {
         $ips = ['200.105.221.91','2.17.35.255','134.201.250.155'];
         foreach($ips as $ip){

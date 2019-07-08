@@ -14,6 +14,7 @@ return [
     'address_extra' => 'Dirección Extra',
     'amount' => 'Monto',
     'city' => 'Ciudad',
+    'city_other' => 'Otra Ciudad',
     'code' => 'Código',
     'company' => 'Compañia',
     'content' => 'Contenido',
@@ -103,5 +104,9 @@ return [
     'recurrent' => 'Recurrente',
     'category' => 'Categoría',
     'product_url' => 'URL de Producto',
+    'city_other' => 'Otra Ciudad',
+    'level' => 'Nivel',
+    'min_quantity' => 'Cantidad Mínima',
+    'new_value' => 'Nuevo Valor',
 
 ];

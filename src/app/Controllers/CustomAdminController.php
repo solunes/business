@@ -31,7 +31,7 @@ class CustomAdminController extends Controller {
 
     public function searchProduct($id = NULL) {
         $array = ['i'=>NULL, 'dt'=>'create'];
-        $categories = \Solunes\Product\App\Category::has('product_bridges')->with('product_bridges')->orderBy('name', 'ASC')->get();
+        $categories = \Solunes\Business\App\Category::has('product_bridges')->with('product_bridges')->orderBy('name', 'ASC')->get();
         $product_options = [''=>'-'];
         foreach($categories as $category){
             foreach($category->products as $product){

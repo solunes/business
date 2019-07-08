@@ -13,8 +13,13 @@ class TruncateSeeder extends Seeder {
      */
     public function run()
     {
+        if(config('business.pricing_rules')){
+            \Solunes\Business\App\PricingRule::truncate();
+        }
         \Solunes\Business\App\ProductBridgeTranslation::truncate();
         \Solunes\Business\App\ProductBridge::truncate();
+        \Solunes\Business\App\CategoryTranslation::truncate();
+        \Solunes\Business\App\Category::truncate();
         if(config('business.contacts')){
             \Solunes\Business\App\Contact::truncate();
         }

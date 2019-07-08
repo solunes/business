@@ -48,5 +48,8 @@ return array(
 	'reservation' => 'Reserva',
 	'subscription' => 'Suscripción',
 	'ticket' => 'Ticket',
+	'discount' => 'Descuento',
+	'increment' => 'Incremento',
+	'percentage' => 'Porcentaje',
 
 );

@@ -195,7 +195,7 @@ class NodesBusiness extends Migration
             $table->integer('level')->nullable();
             $table->integer('order')->nullable()->default(0);
             $table->string('slug')->nullable();
-            if(config('product.category_image')){
+            if(config('product.category_image')||config('business.category_image')){
                 $table->string('image')->nullable();
             }
             $table->timestamps();
@@ -205,9 +205,9 @@ class NodesBusiness extends Migration
             $table->integer('category_id')->unsigned();
             $table->string('locale')->index();
             $table->string('name')->nullable();
-            if(config('product.category_description')){
+            //if(config('product.category_description')){
                 $table->text('description')->nullable();
-            }
+            //}
             $table->unique(['category_id','locale']);
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });

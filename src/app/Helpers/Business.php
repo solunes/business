@@ -256,18 +256,20 @@ class Business {
      
     public static function getProductPrice($product_bridge, $quantity) {
         $price = $product_bridge->real_price;
-        $range_price = \Solunes\Business\App\PricingRule::where('product','product')->where('product_bridge_id', $product_bridge->id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
-        if(!$range_price){
-            $range_price = \Solunes\Business\App\PricingRule::where('product','category')->where('category_id', $product_bridge->category_id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+        if(config('business.pricing_rules')){
+            $range_price = \Solunes\Business\App\PricingRule::where('product','product')->where('product_bridge_id', $product_bridge->id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
             if(!$range_price){
-                $range_price = \Solunes\Business\App\PricingRule::where('product','general')->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+                $range_price = \Solunes\Business\App\PricingRule::where('product','category')->where('category_id', $product_bridge->category_id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('product','general')->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+                }
             }
-        }
-        if($range_price){
-            if($range_price->type=='normal'){
-                $price -= $range_price->value;
-            } else {
-                $price = $price*$range_price->value;
+            if($range_price){
+                if($range_price->type=='normal'){
+                    $price -= $range_price->value;
+                } else {
+                    $price = $price*$range_price->value;
+                }
             }
         }
         // TODO: Custom pricing rules

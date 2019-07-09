@@ -26,7 +26,7 @@ return [
 	'companies' => false,
 	'contacts' => false,
 	'deals' => false,
-	'pricing_rules' => true,
+	'pricing_rules' => false,
 	'category_image' => false,
 
 	// INTEGRATIONS

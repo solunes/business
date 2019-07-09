@@ -132,7 +132,7 @@ class MasterSeeder extends Seeder {
                 }
             } else {
                 if(config('business.seed_agencies')){
-                    $place_1 = \Solunes\Business\App\Agency::create(['name'=>'Central','type'=>'central','address'=>'Dirección de muestra']);
+                    $place_1 = \Solunes\Business\App\Agency::create(['level'=>1,'name'=>'Central','type'=>'central','address'=>'Dirección de muestra']);
                 }
             }
             //\Business::testIpData();

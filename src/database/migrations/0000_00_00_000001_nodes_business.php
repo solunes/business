@@ -110,7 +110,6 @@ class NodesBusiness extends Migration
             $table->increments('id');
             $table->integer('parent_id')->nullable();
             $table->integer('level')->nullable();
-            $table->integer('order')->nullable()->default(0);
             $table->string('name')->nullable();
             $table->enum('type', ['central', 'store', 'office', 'storage', 'other'])->nullable()->default('store');
             $table->integer('region_id')->nullable();

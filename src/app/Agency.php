@@ -25,6 +25,10 @@ class Agency extends Model {
 		'city_id'=>'required',
 		'address'=>'required',
 	);
+             
+    public function children() {
+        return $this->hasMany('Solunes\Business\App\Agency', 'parent_id')->orderBy('order','ASC');
+    }
     
     public function parent() {
         return $this->belongsTo('Solunes\Business\App\Agency', 'parent_id');

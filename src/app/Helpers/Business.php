@@ -185,6 +185,15 @@ class Business {
         return $product_bridge;
     }
    
+    public static function getProductBridgeStockItem($product_bridge, $agency_id) {
+        $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
+        if($stock){
+            return $stock;
+        } else {
+            return NULL;
+        }
+    }
+
     public static function getProductBridgeStock($product_bridge, $agency_id) {
         $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
         if($stock){

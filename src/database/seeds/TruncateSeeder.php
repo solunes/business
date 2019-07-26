@@ -18,8 +18,10 @@ class TruncateSeeder extends Seeder {
         }
         \Solunes\Business\App\ProductBridgeTranslation::truncate();
         \Solunes\Business\App\ProductBridge::truncate();
-        \Solunes\Business\App\CategoryTranslation::truncate();
-        \Solunes\Business\App\Category::truncate();
+        if(config('business.categories')){
+            \Solunes\Business\App\CategoryTranslation::truncate();
+            \Solunes\Business\App\Category::truncate();
+        }
         if(config('business.contacts')){
             \Solunes\Business\App\Contact::truncate();
         }

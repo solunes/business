@@ -27,6 +27,8 @@ return [
 	'contacts' => false,
 	'deals' => false,
 	'pricing_rules' => false,
+	'product_bridge_category' => true,
+	'categories' => true,
 	'category_image' => false,
 
 	// INTEGRATIONS

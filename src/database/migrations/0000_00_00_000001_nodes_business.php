@@ -189,33 +189,37 @@ class NodesBusiness extends Migration
                 });
             }
         }
-        Schema::create('categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('parent_id')->nullable();
-            $table->integer('level')->nullable();
-            $table->integer('order')->nullable()->default(0);
-            $table->string('slug')->nullable();
-            if(config('product.category_image')||config('business.category_image')){
-                $table->string('image')->nullable();
-            }
-            $table->timestamps();
-        });
-        Schema::create('category_translation', function(Blueprint $table) {
-            $table->increments('id');
-            $table->integer('category_id')->unsigned();
-            $table->string('locale')->index();
-            $table->string('name')->nullable();
-            //if(config('product.category_description')){
-                $table->text('description')->nullable();
-            //}
-            $table->unique(['category_id','locale']);
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-        });
+        if(config('business.categories')){
+            Schema::create('categories', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('parent_id')->nullable();
+                $table->integer('level')->nullable();
+                $table->integer('order')->nullable()->default(0);
+                $table->string('slug')->nullable();
+                if(config('product.category_image')||config('business.category_image')){
+                    $table->string('image')->nullable();
+                }
+                $table->timestamps();
+            });
+            Schema::create('category_translation', function(Blueprint $table) {
+                $table->increments('id');
+                $table->integer('category_id')->unsigned();
+                $table->string('locale')->index();
+                $table->string('name')->nullable();
+                //if(config('product.category_description')){
+                    $table->text('description')->nullable();
+                //}
+                $table->unique(['category_id','locale']);
+                $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            });
+        }
         Schema::create('product_bridges', function (Blueprint $table) {
             $table->increments('id');
             $table->string('product_type')->nullable();
             $table->string('product_id')->nullable();
-            $table->integer('category_id')->nullable();
+            if(config('business.product_bridge_category')){
+                $table->integer('category_id')->nullable();
+            }
             $table->integer('product_bridge_parent_id')->nullable();
             $table->string('image')->nullable();
             if(config('business.product_barcode')){
@@ -363,7 +367,9 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('variations');
         Schema::dropIfExists('product_bridge_translation');
         Schema::dropIfExists('product_bridges');
+        Schema::dropIfExists('bridge_category_translation');
         Schema::dropIfExists('category_translation');
+        Schema::dropIfExists('bridge_categories');
         Schema::dropIfExists('categories');
         Schema::dropIfExists('deal_contact');
         Schema::dropIfExists('deal_company');

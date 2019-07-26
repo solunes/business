@@ -35,6 +35,18 @@ class ProductBridge extends Model {
         return $this->belongsToMany('Solunes\Business\App\Variation', 'product_variation', 'product_bridge_id', 'variation_id')->withPivot('product_id','quantity','new_price','value');
     }
 
+    public function product_variation() {
+        return $this->belongsToMany('Solunes\Business\App\Variation', 'product_variation', 'product_bridge_id', 'variation_id')->withPivot('product_id','quantity','new_price','value');
+    }
+
+    public function variation() {
+        return $this->belongsTo('Solunes\Business\App\Variation');
+    }
+
+    public function variation_option() {
+        return $this->belongsTo('Solunes\Business\App\VariationOption');
+    }
+
     public function stockable_product_bridge_variations() {
         return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption')->groupBy('variation_id');
     }
@@ -56,7 +68,11 @@ class ProductBridge extends Model {
     }
 
     public function category() {
-        return $this->belongsTo('Solunes\Business\App\Category');
+        if(config('business.categories')){
+            return $this->belongsTo('Solunes\Business\App\Category');
+        } else {
+            return $this->belongsTo('App\Category');
+        }
     }
 
     public function currency() {

@@ -43,7 +43,9 @@ class MasterSeeder extends Seeder {
                 $node_deal_contact = \Solunes\Master\App\Node::create(['name'=>'deal-contact', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_deal->id, 'model'=>'Solunes\Business\App\Contact']);
             }
         }
-        $node_category = \Solunes\Master\App\Node::create(['name'=>'category', 'table_name'=>'categories', 'multilevel'=>true, 'location'=>'business', 'folder'=>'products']);
+        if(config('business.categories')){
+            $node_category = \Solunes\Master\App\Node::create(['name'=>'category', 'table_name'=>'categories', 'model'=>'\Solunes\Business\App\Category', 'multilevel'=>true, 'location'=>'business', 'folder'=>'products']);
+        }
         $node_product_bridge = \Solunes\Master\App\Node::create(['name'=>'product-bridge', 'location'=>'business']);
         if(config('business.product_variations')){
             $node_variation = \Solunes\Master\App\Node::create(['name'=>'variation', 'location'=>'business', 'folder'=>'products']);

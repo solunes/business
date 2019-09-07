@@ -34,7 +34,6 @@ class Category extends Model {
 	/* Updating rules */
 	public static $rules_edit = array(
 		'id'=>'required',
-        'level'=>'required',
 		'name'=>'required',
 	);
 	   

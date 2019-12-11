@@ -237,6 +237,10 @@ class NodesBusiness extends Migration
                 $table->string('product_internal_code')->nullable();
                 $table->string('product_serial_number')->nullable(); // Para linea blanca y celulares
             }
+            if(config('customer.credit_wallet_points')){
+                $table->boolean('points_active')->nullable()->default(0);
+                $table->integer('points_price')->nullable();
+            }
             if(config('solunes.inventory')){
                 $table->boolean('stockable')->nullable()->default(0);
             }

@@ -38,6 +38,10 @@ class ProductBridge extends Model {
     public function seller_user() {
         return $this->belongsTo('App\User');
     }
+    
+    public function agency() {
+        return $this->belongsTo('Solunes\Business\App\Agency');
+    }
 
     public function product_variation() {
         return $this->belongsToMany('Solunes\Business\App\Variation', 'product_variation', 'product_bridge_id', 'variation_id')->withPivot('product_id','quantity','new_price','value');

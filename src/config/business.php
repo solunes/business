@@ -30,7 +30,7 @@ return [
 	'product_bridge_category' => true,
 	'categories' => true,
 	'category_image' => false,
-	'agencies' => false,
+	'agencies' => true,
 
 	// INTEGRATIONS
 	'ipapi_key' => '8b587af1fe91d0a3f3ac3d9aaaf69cc5',

@@ -220,6 +220,9 @@ class NodesBusiness extends Migration
             if(config('business.product_bridge_category')){
                 $table->integer('category_id')->nullable();
             }
+            if(config('product.seller_user')){
+                $table->integer('seller_user_id')->nullable();
+            }
             $table->integer('product_bridge_parent_id')->nullable();
             $table->string('image')->nullable();
             if(config('business.product_barcode')){

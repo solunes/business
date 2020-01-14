@@ -27,7 +27,9 @@ class ProcessController extends Controller {
             if(config('solunes.customer')&&config('customer.tracking')){
                 $user = auth()->user();
                 $customer = $user->customer;
-                \Customer::createCustomerActivity($customer, 'logout', 'El usuario cerró sesión correctamente.');
+                if($customer){
+                    \Customer::createCustomerActivity($customer, 'logout', 'El usuario cerró sesión correctamente.');
+                }
             }
 	        \Auth::logout();
 	        return redirect('inicio')->with('message_success', 'Su sesión fue cerrada correctamente.');

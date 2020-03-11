@@ -4,6 +4,14 @@ namespace Solunes\Business\App\Helpers;
 
 class Business {
 
+    public static function getAgencyByToken($agency_token) {
+        $agency = NULL;
+        if($agency_token){
+            $agency = \Solunes\Business\App\Agency::where('token', $agency_token)->first();
+        }
+        return $agency;
+    }
+
     public static function changeNodeActionFields($node_array) {
         foreach($node_array as $node_name => $node_detail){
             $node = \Solunes\Master\App\Node::where('name', $node_name)->first();

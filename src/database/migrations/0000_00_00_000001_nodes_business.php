@@ -112,6 +112,9 @@ class NodesBusiness extends Migration
             $table->integer('level')->nullable();
             $table->integer('order')->nullable()->default(0);
             $table->string('name')->nullable();
+            if(config('customer.different_customers_by_agency')){
+                $table->string('token')->nullable();
+            }
             $table->enum('type', ['central', 'store', 'office', 'storage', 'other'])->nullable()->default('store');
             $table->integer('region_id')->nullable();
             $table->integer('city_id')->nullable();

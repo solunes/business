@@ -70,5 +70,9 @@ return [
     'product_internal_code' => 'Código Interno de Producto',
     'product_serial_number' => 'Número de Serie de Producto',
     'product_sin_code' => 'Código de Impuestos de Producto',
-    
+    'agency' => 'Agency',
+    'points_active' => 'Points Active',
+    'points_price' => 'Points Price',
+    'token' => 'Token',
+
 ];

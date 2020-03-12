@@ -109,5 +109,8 @@ return [
     'min_quantity' => 'Cantidad Mínima',
     'new_value' => 'Nuevo Valor',
     'agency_type' => 'Tipo de Agencia',
-
+    'agency' => 'Agencia',
+    'points_active' => 'Puntos Activos',
+    'points_price' => 'Precio de Puntos',
+    'token' => 'Token',
 ];

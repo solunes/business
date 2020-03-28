@@ -21,7 +21,7 @@ var options = {
     onClickEvent: function() {
         var value = $("#search-product-bridge").val();
         $("#search-product-bridge").val('Redireccionando...');
-        window.location.replace("{{ url('producto') }}/"+value);
+        window.location.replace("{{ url(config('business.product_page')) }}/"+value);
     }
   },
 

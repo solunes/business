@@ -49,11 +49,16 @@ class ProcessController extends Controller {
     public function postProductBridgeSearch(Request $request) {
         $products = [];
         if($request->has('term')){
+            $product_slug = config('business.product_slug');
             $term = $request->input('term');
             $subproducts = \Solunes\Business\App\ProductBridgeTranslation::where('name', 'LIKE', '%'.$term.'%')->get();
             foreach($subproducts as $subproduct){
                 $product = $subproduct->product_bridge;
-                $products[] = ['name'=>$product->name, 'image'=>\asset(\Asset::get_image_path('product-bridge-image','detail',$product->image)), 'id'=>$product->id];
+                if($product_slug===true){
+                    $products[] = ['name'=>$product->name, 'image'=>\asset(\Asset::get_image_path('product-bridge-image','detail',$product->image)), 'id'=>$product->slug];
+                } else {
+                    $products[] = ['name'=>$product->name, 'image'=>\asset(\Asset::get_image_path('product-bridge-image','detail',$product->image)), 'id'=>$product->id];
+                }
             }
         }
         return $products;

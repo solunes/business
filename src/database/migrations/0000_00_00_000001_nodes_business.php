@@ -290,6 +290,9 @@ class NodesBusiness extends Migration
         if(config('business.product_variations')){
             Schema::create('variations', function (Blueprint $table) {
                 $table->increments('id');
+                if(config('product.variation_agency')){
+                    $table->integer('agency_id')->nullable();
+                }
                 $table->enum('type', ['choice','quantities'])->default('choice');
                 $table->enum('subtype', ['normal', 'color', 'image'])->nullable()->default('normal');
                 if(config('solunes.inventory')){

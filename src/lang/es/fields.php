@@ -113,4 +113,8 @@ return [
     'points_active' => 'Puntos Activos',
     'points_price' => 'Precio de Puntos',
     'token' => 'Token',
+    'category_variation' => 'Variación de Categoría',
+    'default' => 'Por Defecto',
+    'product_bridge_variation_option' => 'Variación de Producto',
+
 ];

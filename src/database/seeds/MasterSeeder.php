@@ -50,8 +50,11 @@ class MasterSeeder extends Seeder {
         if(config('business.product_variations')){
             $node_variation = \Solunes\Master\App\Node::create(['name'=>'variation', 'location'=>'business', 'folder'=>'products']);
             \Solunes\Master\App\Node::create(['name'=>'variation-option', 'type'=>'child', 'location'=>'business', 'folder'=>'products', 'parent_id'=>$node_variation->id]);
-            \Solunes\Master\App\Node::create(['name'=>'product-bridge-variation-option', 'type'=>'child', 'location'=>'business', 'parent_id'=>$node_product_bridge->id]);
-            \Solunes\Master\App\Node::create(['name'=>'product-variation', 'table_name'=>'product_variation', 'location'=>'product', 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
+            if(config('business.categories')){
+                \Solunes\Master\App\Node::create(['name'=>'category-variation', 'table_name'=>'category_variation', 'location'=>'business', 'translation'=>1, 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_category->id]);
+            }
+            \Solunes\Master\App\Node::create(['name'=>'product-bridge-variation', 'table_name'=>'product_bridge_variation', 'location'=>'business', 'translation'=>1, 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
+            \Solunes\Master\App\Node::create(['name'=>'product-bridge-variation-option', 'table_name'=>'product_bridge_variation_option', 'location'=>'business',  'translation'=>1, 'model'=>'\Solunes\Business\App\VariationOption', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
         }
         if(config('business.pricing_rules')){
             $node_pricing_rule = \Solunes\Master\App\Node::create(['name'=>'pricing-rule', 'location'=>'business', 'folder'=>'parameters']);

@@ -32,9 +32,13 @@ class ProductBridge extends Model {
     );
 
     public function product_bridge_variation() {
-        return $this->belongsToMany('Solunes\Business\App\Variation', 'product_variation', 'product_bridge_id', 'variation_id')->withPivot('product_id','quantity','new_price','value');
+        return $this->belongsToMany('Solunes\Business\App\Variation', 'product_bridge_variation', 'product_bridge_id', 'variation_id');
     }
     
+    public function product_bridge_variation_option() {
+        return $this->belongsToMany('Solunes\Business\App\VariationOption', 'product_bridge_variation_option', 'product_bridge_id', 'variation_option_id');
+    }
+
     public function seller_user() {
         return $this->belongsTo('App\User');
     }
@@ -43,24 +47,8 @@ class ProductBridge extends Model {
         return $this->belongsTo('Solunes\Business\App\Agency');
     }
 
-    public function product_variation() {
-        return $this->belongsToMany('Solunes\Business\App\Variation', 'product_variation', 'product_bridge_id', 'variation_id')->withPivot('product_id','quantity','new_price','value');
-    }
-
-    public function variation() {
-        return $this->belongsTo('Solunes\Business\App\Variation');
-    }
-
-    public function variation_option() {
-        return $this->belongsTo('Solunes\Business\App\VariationOption');
-    }
-
     public function stockable_product_bridge_variations() {
         return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption')->groupBy('variation_id');
-    }
-
-    public function product_bridge_variation_options() {
-        return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption');
     }
 
     public function product_bridge_parent() {
@@ -121,6 +109,8 @@ class ProductBridge extends Model {
             } else if($offer->type=='discount_value'){
                 $price = $price - $offer->value;
             }
+        } else if($this->discount_price){
+            $price = $this->discount_price;
         }
         return $price;
     }

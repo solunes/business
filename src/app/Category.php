@@ -45,8 +45,16 @@ class Category extends Model {
         return $this->belongsTo('Solunes\Business\App\Category', 'parent_id');
     }
 
+    public function agency() {
+        return $this->belongsTo('Solunes\Business\App\Agency');
+    }
+
     public function variation() {
         return $this->belongsTo('Solunes\Business\App\Variation');
+    }
+
+    public function category_variation() {
+        return $this->belongsToMany('Solunes\Business\App\Variation', 'category_variation', 'category_id', 'variation_id');
     }
 
     public function products() {

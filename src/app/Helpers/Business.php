@@ -178,15 +178,8 @@ class Business {
         return $item;
     }
             
-    public static function getProductBridgeVariable($product_bridge, $variation_id = NULL, $variation_value = NULL, $variation_2_id = NULL, $variation_2_value = NULL, $variation_3_id = NULL, $variation_3_value = NULL) {
-        $new_product_bridge = NULL;
-        if($variation_3_id){
-            $new_product_bridge = \Solunes\Business\App\ProductBridge::where('product_type', $product_bridge->product_type)->where('product_id', $product_bridge->product_id)->where('variation_id', $variation_id)->where('variation_option_id', $variation_value)->where('variation_2_id', $variation_2_id)->where('variation_3_id', $variation_3_id)->where('variation_option_3_id', $variation_3_value)->first();
-        } else if($variation_2_id){
-            $new_product_bridge = \Solunes\Business\App\ProductBridge::where('product_type', $product_bridge->product_type)->where('product_id', $product_bridge->product_id)->where('variation_id', $variation_id)->where('variation_option_id', $variation_value)->where('variation_2_id', $variation_2_id)->where('variation_option_2_id', $variation_2_value)->first();
-        } else if($variation_id) {
-            $new_product_bridge = \Solunes\Business\App\ProductBridge::where('product_type', $product_bridge->product_type)->where('product_id', $product_bridge->product_id)->where('variation_id', $variation_id)->where('variation_option_id', $variation_value)->first();
-        }
+    public static function getProductBridgeVariable($product_bridge, $variation_option_ids) {
+        $new_product_bridge = \Solunes\Business\App\ProductBridge::where('product_type', $product_bridge->product_type)->where('product_id', $product_bridge->product_id)->first();
         if($new_product_bridge){
             $product_bridge = $new_product_bridge;
         }

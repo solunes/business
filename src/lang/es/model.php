@@ -28,7 +28,10 @@ return [
     'variation' => 'Variación|Variaciones',
     'variation-option' => 'Opción de Variación|Opciones de Variación',
     'product-bridge-variation-option' => 'Item de Variación de Producto|Items de Variación de Producto',
-    'holiday' => 'holiday',
-    'labor-day' => 'labor-day',
+    'holiday' => 'Feriado|Feriados',
+    'labor-day' => 'Día Laboral|Días Laborales',
+    'category-variation' => 'Variación de Categoría|Variaciones de Categoría',
+    'product-variation-option' => 'Opción de Variación de Producto|Opciones de Variación de Producto',
+    'product-group-subscription' => 'Suscripción de Producto|Suscripción de Productos',
 
 ];

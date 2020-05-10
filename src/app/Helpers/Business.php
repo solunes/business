@@ -226,6 +226,7 @@ class Business {
         $array = \Business::getIpData($ip);
         if($array&&isset($array['ip'])){
             \Log::info('IP Encontrado: '.json_encode($array));
+            $country = NULL;
             $region = NULL;
             if($array['region_code']==NULL){
                 $region = \Solunes\Business\App\Region::where('code','other')->first();

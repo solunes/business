@@ -203,7 +203,11 @@ class Business {
             return 0;
         }
     }
-   
+
+   public static function getCustomerIp(){
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
     public static function getIpData($ip) {
         $key = config('business.ipapi_key');
         $url = 'http://api.ipstack.com/'.$ip.'?access_key='.$key.'&format=1'; // asmx URL of WSDL
@@ -259,8 +263,10 @@ class Business {
                 $city = \Solunes\Business\App\City::create(['region_id'=>$region->id,'name'=>$array['city'],'latitude'=>$array['latitude'],'longitude'=>$array['longitude']]);
             }
             \Log::info('IP Encontrado: CountryID '.$country->id.' - RegionID '.$region->id.' -  CityID '.$city->id);
+            return ['ip'=>$array['ip'], 'country'=>$country, 'region'=>$region, 'city'=>$city];
         } else {
             \Log::info('IP NO Encontrado: '.json_encode($array));
+            return ['ip'=>NULL, 'country'=>NULL, 'region'=>NULL, 'city'=>NULL];
         }
     }
      

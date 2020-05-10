@@ -262,7 +262,11 @@ class Business {
             if(!$city&&!$city = \Solunes\Business\App\City::where('region_id',$region->id)->whereTranslation('name',$array['city'])->first()){
                 $city = \Solunes\Business\App\City::create(['region_id'=>$region->id,'name'=>$array['city'],'latitude'=>$array['latitude'],'longitude'=>$array['longitude']]);
             }
-            \Log::info('IP Encontrado: CountryID '.$country->id.' - RegionID '.$region->id.' -  CityID '.$city->id);
+            if($country&&$region&&$city){
+                \Log::info('IP Encontrado: CountryID '.$country->id.' - RegionID '.$region->id.' -  CityID '.$city->id);
+            } else {
+                \Log::info('IP Encontrado: Sin datos de region');
+            }
             return ['ip'=>$array['ip'], 'country'=>$country, 'region'=>$region, 'city'=>$city];
         } else {
             \Log::info('IP NO Encontrado: '.json_encode($array));

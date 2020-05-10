@@ -16,6 +16,7 @@ return [
     'city' => 'Ciudad',
     'city_other' => 'Otra Ciudad',
     'code' => 'Código',
+    'color' => 'Color',
     'company' => 'Compañia',
     'content' => 'Contenido',
     'created_at' => 'Fecha de Creación',

@@ -44,6 +44,10 @@ class Agency extends Model {
    
     public function store() {
         return $this->hasOne('App\Store');
+    }   
+
+    public function area() {
+        return $this->belongsTo('App\Area');
     }
 
     public function agency_payment_method() {

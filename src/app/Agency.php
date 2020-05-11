@@ -42,6 +42,10 @@ class Agency extends Model {
         return $this->belongsTo('Solunes\Business\App\City');
     }
    
+    public function store() {
+        return $this->hasOne('App\Store');
+    }
+
     public function agency_payment_method() {
         return $this->belongsToMany('Solunes\Payments\App\PaymentMethod', 'agency_payment_method', 'agency_id', 'payment_method_id');
     }

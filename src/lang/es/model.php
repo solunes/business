@@ -10,6 +10,8 @@ return [
     */
 
     'agency' => 'Agencia|Agencias',
+    'agency-payment-method' => 'Método de Pago|Métodos de Pago',
+    'agency-shipping' => 'Método de Envío|Métodos de Envío',
     'category' => 'Categoria|Categorias',
     'city' => 'Ciudad|Ciudades',
     'company' => 'Compañia|Compañias',

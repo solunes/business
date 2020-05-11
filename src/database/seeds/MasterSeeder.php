@@ -28,6 +28,12 @@ class MasterSeeder extends Seeder {
         $node_city = \Solunes\Master\App\Node::create(['name'=>'city', 'table_name'=>'cities', 'location'=>'business', 'folder'=>'parameters']);
         $node_currency = \Solunes\Master\App\Node::create(['name'=>'currency', 'table_name'=>'currencies', 'location'=>'business', 'folder'=>'parameters']);
         $node_agency = \Solunes\Master\App\Node::create(['name'=>'agency', 'table_name'=>'agencies', 'multilevel'=>true, 'location'=>'business', 'folder'=>'parameters']);
+        if(config('business.agency_payment_methods')){
+            $node_agency_payment_method = \Solunes\Master\App\Node::create(['name'=>'agency-payment-method', 'table_name'=>'agency_payment_method', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_agency->id, 'model'=>'Solunes\Payments\App\PaymentMethod']);
+        }
+        if(config('business.agency_shippings')){
+            $node_agency_shipping = \Solunes\Master\App\Node::create(['name'=>'agency-shipping', 'table_name'=>'agency_shipping', 'location'=>'business', 'type'=>'field', 'parent_id'=>$node_agency->id, 'model'=>'Solunes\Sales\App\Shipping']);
+        }
         if(config('business.companies')){
             $node_company = \Solunes\Master\App\Node::create(['name'=>'company', 'table_name'=>'companies', 'location'=>'business', 'folder'=>'business']);
         }

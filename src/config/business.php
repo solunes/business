@@ -32,6 +32,8 @@ return [
 	'category_image' => false,
 	'agencies' => true,
 	'variation_agencies' => false,
+	'agency_payment_methods' => false,
+	'agency_shippings' => false,
 
 	// INTEGRATIONS
 	'ipapi_key' => '8b587af1fe91d0a3f3ac3d9aaaf69cc5',

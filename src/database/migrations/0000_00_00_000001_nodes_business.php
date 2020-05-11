@@ -127,6 +127,20 @@ class NodesBusiness extends Migration
             }
             $table->timestamps();
         });
+        if(config('business.agency_payment_methods')){
+            Schema::create('agency_payment_method', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('agency_id')->nullable();
+                $table->integer('payment_method_id')->nullable();
+            });
+        }
+        if(config('business.agency_shippings')){
+            Schema::create('agency_shipping', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('agency_id')->nullable();
+                $table->integer('shipping_id')->nullable();
+            });
+        }
         if(config('business.companies')){
             Schema::create('companies', function (Blueprint $table) {
                 $table->increments('id');
@@ -429,6 +443,8 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('deals');
         Schema::dropIfExists('contacts');
         Schema::dropIfExists('companies');
+        Schema::dropIfExists('agency_shipping_method');
+        Schema::dropIfExists('agency_payment_method');
         Schema::dropIfExists('agencies');
         Schema::dropIfExists('currency_translation');
         Schema::dropIfExists('currencies');

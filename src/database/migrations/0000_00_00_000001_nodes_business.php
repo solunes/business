@@ -334,7 +334,7 @@ class NodesBusiness extends Migration
                 //if(config('solunes.inventory')){
                     $table->boolean('stockable')->nullable()->default(1);
                 //}
-                $table->string('advanced')->nullable()->default(0);
+                $table->boolean('advanced')->nullable()->default(0);
                 $table->integer('max_choices')->nullable()->default(0);
                 $table->boolean('optional')->nullable()->default(0);
                 $table->timestamps();
@@ -443,7 +443,7 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('deals');
         Schema::dropIfExists('contacts');
         Schema::dropIfExists('companies');
-        Schema::dropIfExists('agency_shipping_method');
+        Schema::dropIfExists('agency_shipping');
         Schema::dropIfExists('agency_payment_method');
         Schema::dropIfExists('agencies');
         Schema::dropIfExists('currency_translation');

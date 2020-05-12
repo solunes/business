@@ -59,6 +59,11 @@ class MasterSeeder extends Seeder {
             if(config('business.categories')){
                 \Solunes\Master\App\Node::create(['name'=>'category-variation', 'table_name'=>'category_variation', 'location'=>'business', 'translation'=>1, 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_category->id]);
             }
+            $image_folder = \Solunes\Master\App\ImageFolder::create(['site_id'=>1,'name'=>'variation-option-image','extension'=>'jpg']);
+            \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'normal','type'=>'resize','width'=>800,'height'=>NULL]);
+            \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'thumb','type'=>'fit','width'=>300,'height'=>300]);
+            \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'tiny','type'=>'fit','width'=>50,'height'=>50]);
+
             \Solunes\Master\App\Node::create(['name'=>'product-bridge-variation', 'table_name'=>'product_bridge_variation', 'location'=>'business', 'translation'=>1, 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
             \Solunes\Master\App\Node::create(['name'=>'product-bridge-variation-option', 'table_name'=>'product_bridge_variation_option', 'location'=>'business',  'translation'=>1, 'model'=>'\Solunes\Business\App\VariationOption', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
         }

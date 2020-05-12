@@ -355,6 +355,7 @@ class NodesBusiness extends Migration
                 $table->integer('max_quantity')->nullable()->default(0);
                 $table->boolean('default')->nullable()->default(0);
                 $table->string('color')->nullable();
+                $table->string('image')->nullable();
                 $table->timestamps();
             });
             Schema::create('variation_option_translation', function(Blueprint $table) {

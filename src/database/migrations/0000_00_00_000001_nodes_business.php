@@ -122,9 +122,18 @@ class NodesBusiness extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->text('map')->nullable();
-            if(config('solunes.inventory')){
+            if(config('solunes.agency_shippings')&&config('business.variation_agencies')){
+                if(config('sales.delivery_select_day')){
+                    $table->boolean('delivery_select_day')->default(1);
+                }
+                if(config('sales.delivery_select_hour')){
+                    $table->boolean('delivery_select_hour')->default(1);
+                }
+            }
+            if(config('solunes.inventory')&&config('business.variation_agencies')){
                 $table->boolean('stockable')->default(1);
             }
+
             $table->timestamps();
         });
         if(config('business.agency_payment_methods')){
@@ -288,6 +297,9 @@ class NodesBusiness extends Migration
             }
             if(config('solunes.inventory')){
                 $table->boolean('stockable')->nullable()->default(0);
+                if(config('inventory.basic_inventory')){
+                    $table->integer('quantity')->nullable()->default(1);
+                }
             }
             if(config('business.product_variations')){
                 //$table->integer('variation_id')->nullable();

@@ -84,10 +84,14 @@ class ProductBridge extends Model {
     }
 
     public function getTotalStockAttribute() {
-        if(count($this->product_bridge_stocks)>0){
-            return $this->product_bridge_stocks->sum('quantity');
+        if(config('inventory.basic_inventory')){
+            return $this->quantity;
         } else {
-            return 0;
+            if(count($this->product_bridge_stocks)>0){
+                return $this->product_bridge_stocks->sum('quantity');
+            } else {
+                return 0;
+            }
         }
     }
 

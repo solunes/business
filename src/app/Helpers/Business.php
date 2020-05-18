@@ -187,20 +187,28 @@ class Business {
     }
    
     public static function getProductBridgeStockItem($product_bridge, $agency_id) {
-        $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
-        if($stock){
-            return $stock;
+        if(config('inventory.basic_inventory')){
+            return $product_bridge->quantity;
         } else {
-            return NULL;
+            $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
+            if($stock){
+                return $stock;
+            } else {
+                return NULL;
+            }
         }
     }
 
     public static function getProductBridgeStock($product_bridge, $agency_id) {
-        $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
-        if($stock){
-            return $stock->quantity;
+        if(config('inventory.basic_inventory')){
+            return $product_bridge->quantity;
         } else {
-            return 0;
+            $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
+            if($stock){
+                return $stock->quantity;
+            } else {
+                return 0;
+            }
         }
     }
 

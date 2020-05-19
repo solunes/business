@@ -52,12 +52,21 @@ class MasterSeeder extends Seeder {
         if(config('business.categories')){
             $node_category = \Solunes\Master\App\Node::create(['name'=>'category', 'table_name'=>'categories', 'model'=>'\Solunes\Business\App\Category', 'multilevel'=>true, 'location'=>'business', 'folder'=>'products']);
         }
+        if(config('business.brands')){
+            $node_brand = \Solunes\Master\App\Node::create(['name'=>'brand', 'table_name'=>'brands', 'location'=>'business', 'folder'=>'parameters']);
+        }
+        if(config('business.channels')){
+            $node_channel = \Solunes\Master\App\Node::create(['name'=>'channel', 'table_name'=>'channels', 'location'=>'business', 'folder'=>'parameters']);
+        }
         $node_product_bridge = \Solunes\Master\App\Node::create(['name'=>'product-bridge', 'location'=>'business']);
         if(config('business.product_variations')){
             $node_variation = \Solunes\Master\App\Node::create(['name'=>'variation', 'location'=>'business', 'folder'=>'products']);
             \Solunes\Master\App\Node::create(['name'=>'variation-option', 'type'=>'child', 'location'=>'business', 'folder'=>'products', 'parent_id'=>$node_variation->id]);
             if(config('business.categories')){
                 \Solunes\Master\App\Node::create(['name'=>'category-variation', 'table_name'=>'category_variation', 'location'=>'business', 'translation'=>1, 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_category->id]);
+            }
+            if(config('business.channels')){
+                \Solunes\Master\App\Node::create(['name'=>'product-bridge-channel', 'table_name'=>'product_bridge_channel', 'location'=>'business', 'translation'=>1, 'model'=>'\Solunes\Business\App\Channel', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
             }
             $image_folder = \Solunes\Master\App\ImageFolder::create(['site_id'=>1,'name'=>'variation-option-image','extension'=>'jpg']);
             \Solunes\Master\App\ImageSize::create(['parent_id'=>$image_folder->id,'code'=>'normal','type'=>'resize','width'=>800,'height'=>NULL]);

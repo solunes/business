@@ -242,6 +242,15 @@ class NodesBusiness extends Migration
                 $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             });
         }
+        if(config('business.channels')){
+            Schema::create('channels', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('slug')->nullable();
+                $table->enum('type', ['public','private'])->nullable()->default('public');
+                $table->string('name')->nullable();
+                $table->timestamps();
+            });
+        }
         if(config('business.brands')){
             Schema::create('brands', function (Blueprint $table) {
                 $table->increments('id');
@@ -335,6 +344,13 @@ class NodesBusiness extends Migration
             $table->unique(['product_bridge_id','locale']);
             $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
         });
+        if(config('business.channels')){
+            Schema::create('product_bridge_channel', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('product_bridge_id')->nullable();
+                $table->integer('channel_id')->nullable();
+            });
+        }
         if(config('business.product_variations')){
             Schema::create('variations', function (Blueprint $table) {
                 $table->increments('id');
@@ -438,6 +454,7 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('pricing_rules');
         Schema::dropIfExists('product_bridge_variation_options');
         Schema::dropIfExists('product_bridge_variation_option');
+        Schema::dropIfExists('product_bridge_channel');
         Schema::dropIfExists('product_bridge_variation');
         Schema::dropIfExists('category_variation');
         Schema::dropIfExists('product_variation');
@@ -447,6 +464,7 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('variations');
         Schema::dropIfExists('product_bridge_translation');
         Schema::dropIfExists('product_bridges');
+        Schema::dropIfExists('channels');
         Schema::dropIfExists('brands');
         Schema::dropIfExists('category_variation');
         Schema::dropIfExists('category_translation');

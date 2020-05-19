@@ -26,6 +26,7 @@ return [
 	'companies' => false,
 	'contacts' => false,
 	'deals' => false,
+	'channels' => false,
 	'pricing_rules' => false,
 	'product_bridge_category' => true,
 	'categories' => true,

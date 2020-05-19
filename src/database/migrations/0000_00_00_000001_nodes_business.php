@@ -120,6 +120,7 @@ class NodesBusiness extends Migration
             $table->integer('city_id')->nullable();
             $table->string('city_other')->nullable();
             $table->string('address')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->text('map')->nullable();
             if(config('solunes.agency_shippings')&&config('business.variation_agencies')){

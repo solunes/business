@@ -21,7 +21,7 @@ return [
     'deal' => 'Negocio|Negocios',
     'deal-company' => 'Compañia en Negocio|Compañias en Negocio',
     'deal-contact' => 'Contacto en Negocio|Contactos en Negocio',
-    'pricing-rule' => 'Regla de Precio|Reglas de Precio',
+    'pricing-rule' => 'Descuento|Descuentos',
     'product-bridge' => 'Producto (Puente)|Productos (Puente)',
     'product-bridge-stock' => 'Stock de Producto (Puente)|Stock de Productos (Puente)',
     'product-bridge-variation' => 'Variación de Producto (Puente)|Variaciones de Producto (Puente)',
@@ -35,5 +35,6 @@ return [
     'category-variation' => 'Variación de Categoría|Variaciones de Categoría',
     'product-variation-option' => 'Opción de Variación de Producto|Opciones de Variación de Producto',
     'product-group-subscription' => 'Suscripción de Producto|Suscripción de Productos',
+    'channel' => 'Canal de Venta|Canales de Venta',
 
 ];

@@ -75,6 +75,10 @@ class ProductBridge extends Model {
         }
     }
 
+    public function pricing_rule() {
+        return $this->hasOne('Solunes\Business\App\PricingRule');
+    }
+
     public function currency() {
         return $this->belongsTo('Solunes\Business\App\Currency');
     }
@@ -109,16 +113,31 @@ class ProductBridge extends Model {
         return $url;
     }
 
+    public function getFullPriceAttribute() {
+        $price = $this->price;
+        return $price;
+    }
+
     public function getRealPriceAttribute() {
         $price = $this->price;
-        if($offer = $this->product_offer){
-            if($offer->type=='discount_percentage'){
-                $price = $price - ($price * $offer->value / 100);
-            } else if($offer->type=='discount_value'){
-                $price = $price - $offer->value;
-            }
-        } else if($this->discount_price){
+        if($this->discount_price){
             $price = $this->discount_price;
+        }
+        if(config('business.pricing_rules')){
+            $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','product')->where('product_bridge_id', $this->id)->first();
+            if(!$range_price){
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','category')->where('category_id', $this->category_id)->first();
+            }
+            if($range_price){
+                if($range_price->item_type=='percentage'){
+                    $price = $price - ($price * $offer->discount_percentage / 100);
+                } else if($range_price->item_type=='normal'){
+                    $price = $price - $offer->discount_value;
+                }
+            } 
+        }
+        if($price<0){
+            $price = 0;
         }
         return $price;
     }

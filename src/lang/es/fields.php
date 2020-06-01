@@ -120,5 +120,12 @@ return [
     'category_variation' => 'Variación de Categoría',
     'default' => 'Por Defecto',
     'product_bridge_variation_option' => 'Variación de Producto',
-
+    'channel' => 'Canal',
+    'coupon_code' => 'Código de Cupón',
+    'discount_percentage' => 'Descuento en Porcentaje',
+    'discount_type' => 'Tipo de Descuento',
+    'discount_value' => 'Monto de Descuento',
+    'product_bridge_channel' => 'Canal de Producto',
+    'shipping' => 'Método de Envío',
+    'item_type' => 'Tipo de Item',
 ];

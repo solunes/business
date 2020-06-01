@@ -430,15 +430,18 @@ class NodesBusiness extends Migration
         if(config('business.pricing_rules')){
             Schema::create('pricing_rules', function (Blueprint $table) {
                 $table->increments('id');
+                $table->string('name')->nullable();
+                $table->enum('type', ['automatic','coupon'])->nullable();
+                $table->string('coupon_code')->nullable();
+                $table->enum('item_type', ['general', 'category','product'])->nullable()->default('general');
                 $table->integer('category_id')->nullable();
                 $table->integer('product_bridge_id')->nullable();
-                $table->enum('agency_type', ['maintain', 'central', 'store', 'office', 'storage', 'other'])->nullable()->default('maintain');
-                $table->enum('type', ['normal', 'percentage'])->nullable()->default('normal');
-                $table->enum('product', ['general', 'category','product'])->nullable()->default('product');
                 $table->boolean('active')->nullable()->default(1);
-                $table->integer('min_quantity')->nullable();
-                $table->integer('max_quantity')->nullable();
-                $table->decimal('value', 10, 2)->nullable();
+                $table->enum('discount_type', ['normal', 'percentage'])->nullable()->default('normal');
+                //$table->integer('currency_id')->nullable();
+                $table->decimal('discount_value', 10, 2)->nullable();
+                $table->integer('discount_percentage')->nullable();
+                $table->enum('user_usages', ['once', 'unlimited'])->nullable()->default('once');
                 $table->timestamps();
             });
         }

@@ -282,24 +282,84 @@ class Business {
             return ['ip'=>NULL, 'country'=>NULL, 'region'=>NULL, 'city'=>NULL];
         }
     }
-     
-    public static function getProductPrice($product_bridge, $quantity) {
-        $price = $product_bridge->real_price;
+    
+    public static function getSaleDiscount($order_amount, $coupon_code = NULL) {
+        $range_price = NULL;
         if(config('business.pricing_rules')){
-            $range_price = \Solunes\Business\App\PricingRule::where('product','product')->where('product_bridge_id', $product_bridge->id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
-            if(!$range_price){
-                $range_price = \Solunes\Business\App\PricingRule::where('product','category')->where('category_id', $product_bridge->category_id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+            if($coupon_code){
                 if(!$range_price){
-                    $range_price = \Solunes\Business\App\PricingRule::where('product','general')->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','general')->where('coupon_code', $coupon_code)->first();
+                }
+            } 
+            if(!$range_price){
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','general')->first();
+            }
+            if($range_price){
+                if($range_price->discount_type=='normal'){
+                    $order_amount -= $range_price->discount_value;
+                } else if($range_price->discount_type=='percentage') {
+                    $order_amount -= round($order_amount*($range_price->discount_percentage/100), 2);
+                }
+            }
+        }
+        if($order_amount<0){
+            $order_amount = 0;
+        }
+        // TODO: Custom pricing rules
+        return $order_amount;
+    }
+
+    public static function getProductDiscount($product_bridge, $quantity, $coupon_code = NULL) {
+        $price = 0;
+        $range_price = NULL;
+        if(config('business.pricing_rules')){
+            if($coupon_code){
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','product')->where('product_bridge_id', $product_bridge->id)->where('coupon_code', $coupon_code)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','category')->where('category_id', $product_bridge->category_id)->where('coupon_code', $coupon_code)->first();
+                }
+            } else {
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','product')->where('product_bridge_id', $product_bridge->id)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','category')->where('category_id', $product_bridge->category_id)->first();
                 }
             }
             if($range_price){
-                if($range_price->type=='normal'){
-                    $price -= $range_price->value;
-                } else {
-                    $price = $price*$range_price->value;
+                if($range_price->discount_type=='normal'){
+                    $price += $range_price->discount_value;
+                } else if($range_price->discount_type=='percentage') {
+                    $price += round($price*($range_price->discount_percentage/100), 2);
                 }
             }
+        }
+        return $price;
+    }
+
+    public static function getProductPrice($product_bridge, $quantity, $coupon_code = NULL) {
+        $price = $product_bridge->real_price;
+        $range_price = NULL;
+        if(config('business.pricing_rules')){
+            if($coupon_code){
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','product')->where('product_bridge_id', $product_bridge->id)->where('coupon_code', $coupon_code)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','category')->where('category_id', $product_bridge->category_id)->where('coupon_code', $coupon_code)->first();
+                }
+            } else {
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','product')->where('product_bridge_id', $product_bridge->id)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','category')->where('category_id', $product_bridge->category_id)->first();
+                }
+            }
+            if($range_price){
+                if($range_price->discount_type=='normal'){
+                    $price -= $range_price->discount_value;
+                } else if($range_price->discount_type=='percentage') {
+                    $price -= round($price*($range_price->discount_percentage/100), 2);
+                }
+            }
+        }
+        if($price<0){
+            $price = 0;
         }
         // TODO: Custom pricing rules
         return $price;

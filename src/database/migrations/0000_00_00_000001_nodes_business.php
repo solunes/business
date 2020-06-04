@@ -265,7 +265,7 @@ class NodesBusiness extends Migration
                     $table->integer('variation_option_3_id')->nullable();
                 }
             }
-            $table->enum('delivery_type', ['normal','digital','subscription','reservation','ticket','credit'])->nullable()->default('normal');
+            $table->enum('delivery_type', ['normal','digital','recurrent','subscription','reservation','ticket','credit'])->nullable()->default('normal');
             if(config('product.product_url')){
                 $table->string('product_url')->nullable();
             }

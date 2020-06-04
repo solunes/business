@@ -47,6 +47,7 @@ return array(
 	'credit' => 'Crédito',
 	'reservation' => 'Reserva',
 	'subscription' => 'Suscripción',
+	'recurrent' => 'Recurrente',
 	'ticket' => 'Ticket',
 	'discount' => 'Descuento',
 	'increment' => 'Incremento',

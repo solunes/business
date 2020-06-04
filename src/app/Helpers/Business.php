@@ -178,15 +178,8 @@ class Business {
         return $item;
     }
             
-    public static function getProductBridgeVariable($product_bridge, $variation_id = NULL, $variation_value = NULL, $variation_2_id = NULL, $variation_2_value = NULL, $variation_3_id = NULL, $variation_3_value = NULL) {
-        $new_product_bridge = NULL;
-        if($variation_3_id){
-            $new_product_bridge = \Solunes\Business\App\ProductBridge::where('product_type', $product_bridge->product_type)->where('product_id', $product_bridge->product_id)->where('variation_id', $variation_id)->where('variation_option_id', $variation_value)->where('variation_2_id', $variation_2_id)->where('variation_3_id', $variation_3_id)->where('variation_option_3_id', $variation_3_value)->first();
-        } else if($variation_2_id){
-            $new_product_bridge = \Solunes\Business\App\ProductBridge::where('product_type', $product_bridge->product_type)->where('product_id', $product_bridge->product_id)->where('variation_id', $variation_id)->where('variation_option_id', $variation_value)->where('variation_2_id', $variation_2_id)->where('variation_option_2_id', $variation_2_value)->first();
-        } else if($variation_id) {
-            $new_product_bridge = \Solunes\Business\App\ProductBridge::where('product_type', $product_bridge->product_type)->where('product_id', $product_bridge->product_id)->where('variation_id', $variation_id)->where('variation_option_id', $variation_value)->first();
-        }
+    public static function getProductBridgeVariable($product_bridge, $variation_option_ids) {
+        $new_product_bridge = \Solunes\Business\App\ProductBridge::where('product_type', $product_bridge->product_type)->where('product_id', $product_bridge->product_id)->first();
         if($new_product_bridge){
             $product_bridge = $new_product_bridge;
         }
@@ -194,23 +187,35 @@ class Business {
     }
    
     public static function getProductBridgeStockItem($product_bridge, $agency_id) {
-        $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
-        if($stock){
-            return $stock;
+        if(config('inventory.basic_inventory')){
+            return $product_bridge->quantity;
         } else {
-            return NULL;
+            $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
+            if($stock){
+                return $stock;
+            } else {
+                return NULL;
+            }
         }
     }
 
     public static function getProductBridgeStock($product_bridge, $agency_id) {
-        $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
-        if($stock){
-            return $stock->quantity;
+        if(config('inventory.basic_inventory')){
+            return $product_bridge->quantity;
         } else {
-            return 0;
+            $stock = $product_bridge->last_product_bridge_stocks()->where('agency_id', $agency_id)->first();
+            if($stock){
+                return $stock->quantity;
+            } else {
+                return 0;
+            }
         }
     }
-   
+
+   public static function getCustomerIp(){
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
     public static function getIpData($ip) {
         $key = config('business.ipapi_key');
         $url = 'http://api.ipstack.com/'.$ip.'?access_key='.$key.'&format=1'; // asmx URL of WSDL
@@ -229,6 +234,7 @@ class Business {
         $array = \Business::getIpData($ip);
         if($array&&isset($array['ip'])){
             \Log::info('IP Encontrado: '.json_encode($array));
+            $country = NULL;
             $region = NULL;
             if($array['region_code']==NULL){
                 $region = \Solunes\Business\App\Region::where('code','other')->first();
@@ -265,29 +271,95 @@ class Business {
             if(!$city&&!$city = \Solunes\Business\App\City::where('region_id',$region->id)->whereTranslation('name',$array['city'])->first()){
                 $city = \Solunes\Business\App\City::create(['region_id'=>$region->id,'name'=>$array['city'],'latitude'=>$array['latitude'],'longitude'=>$array['longitude']]);
             }
-            \Log::info('IP Encontrado: CountryID '.$country->id.' - RegionID '.$region->id.' -  CityID '.$city->id);
+            if($country&&$region&&$city){
+                \Log::info('IP Encontrado: CountryID '.$country->id.' - RegionID '.$region->id.' -  CityID '.$city->id);
+            } else {
+                \Log::info('IP Encontrado: Sin datos de region');
+            }
+            return ['ip'=>$array['ip'], 'country'=>$country, 'region'=>$region, 'city'=>$city];
         } else {
             \Log::info('IP NO Encontrado: '.json_encode($array));
+            return ['ip'=>NULL, 'country'=>NULL, 'region'=>NULL, 'city'=>NULL];
         }
     }
-     
-    public static function getProductPrice($product_bridge, $quantity) {
-        $price = $product_bridge->real_price;
+    
+    public static function getSaleDiscount($order_amount, $coupon_code = NULL) {
+        $range_price = NULL;
         if(config('business.pricing_rules')){
-            $range_price = \Solunes\Business\App\PricingRule::where('product','product')->where('product_bridge_id', $product_bridge->id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
-            if(!$range_price){
-                $range_price = \Solunes\Business\App\PricingRule::where('product','category')->where('category_id', $product_bridge->category_id)->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+            if($coupon_code){
                 if(!$range_price){
-                    $range_price = \Solunes\Business\App\PricingRule::where('product','general')->where('min_quantity', '>=', $quantity)->where('max_quantity', '<=', $quantity)->first();
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','general')->where('coupon_code', $coupon_code)->first();
+                }
+            } 
+            if(!$range_price){
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','general')->first();
+            }
+            if($range_price){
+                if($range_price->discount_type=='normal'){
+                    $order_amount -= $range_price->discount_value;
+                } else if($range_price->discount_type=='percentage') {
+                    $order_amount -= round($order_amount*($range_price->discount_percentage/100), 2);
+                }
+            }
+        }
+        if($order_amount<0){
+            $order_amount = 0;
+        }
+        // TODO: Custom pricing rules
+        return $order_amount;
+    }
+
+    public static function getProductDiscount($product_bridge, $quantity, $coupon_code = NULL) {
+        $price = 0;
+        $range_price = NULL;
+        if(config('business.pricing_rules')){
+            if($coupon_code){
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','product')->where('product_bridge_id', $product_bridge->id)->where('coupon_code', $coupon_code)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','category')->where('category_id', $product_bridge->category_id)->where('coupon_code', $coupon_code)->first();
+                }
+            } else {
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','product')->where('product_bridge_id', $product_bridge->id)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','category')->where('category_id', $product_bridge->category_id)->first();
                 }
             }
             if($range_price){
-                if($range_price->type=='normal'){
-                    $price -= $range_price->value;
-                } else {
-                    $price = $price*$range_price->value;
+                if($range_price->discount_type=='normal'){
+                    $price += $range_price->discount_value;
+                } else if($range_price->discount_type=='percentage') {
+                    $price += round($price*($range_price->discount_percentage/100), 2);
                 }
             }
+        }
+        return $price;
+    }
+
+    public static function getProductPrice($product_bridge, $quantity, $coupon_code = NULL) {
+        $price = $product_bridge->real_price;
+        $range_price = NULL;
+        if(config('business.pricing_rules')){
+            if($coupon_code){
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','product')->where('product_bridge_id', $product_bridge->id)->where('coupon_code', $coupon_code)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','category')->where('category_id', $product_bridge->category_id)->where('coupon_code', $coupon_code)->first();
+                }
+            } else {
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','product')->where('product_bridge_id', $product_bridge->id)->first();
+                if(!$range_price){
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','category')->where('category_id', $product_bridge->category_id)->first();
+                }
+            }
+            if($range_price){
+                if($range_price->discount_type=='normal'){
+                    $price -= $range_price->discount_value;
+                } else if($range_price->discount_type=='percentage') {
+                    $price -= round($price*($range_price->discount_percentage/100), 2);
+                }
+            }
+        }
+        if($price<0){
+            $price = 0;
         }
         // TODO: Custom pricing rules
         return $price;

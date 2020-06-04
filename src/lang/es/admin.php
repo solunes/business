@@ -56,5 +56,11 @@ return array(
 	'general' => 'General',
 	'maintain' => 'Mantener',
 	'product' => 'Producto',
+	'label' => 'Etiqueta',
+	'automatic' => 'Automático',
+	'coupon' => 'Cupón',
+	'free-shipping' => 'Envío Gratuito',
+	'private' => 'Privado',
+	'public' => 'Público',
 
 );

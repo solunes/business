@@ -32,7 +32,15 @@ class ProductBridge extends Model {
     );
 
     public function product_bridge_variation() {
-        return $this->belongsToMany('Solunes\Business\App\Variation', 'product_variation', 'product_bridge_id', 'variation_id')->withPivot('product_id','quantity','new_price','value');
+        return $this->belongsToMany('Solunes\Business\App\Variation', 'product_bridge_variation', 'product_bridge_id', 'variation_id');
+    }
+    
+    public function product_bridge_variation_option() {
+        return $this->belongsToMany('Solunes\Business\App\VariationOption', 'product_bridge_variation_option', 'product_bridge_id', 'variation_option_id');
+    }
+
+    public function product_bridge_channel() {
+        return $this->belongsToMany('Solunes\Business\App\Channel', 'product_bridge_channel', 'product_bridge_id', 'channel_id');
     }
     
     public function seller_user() {
@@ -43,24 +51,8 @@ class ProductBridge extends Model {
         return $this->belongsTo('Solunes\Business\App\Agency');
     }
 
-    public function product_variation() {
-        return $this->belongsToMany('Solunes\Business\App\Variation', 'product_variation', 'product_bridge_id', 'variation_id')->withPivot('product_id','quantity','new_price','value');
-    }
-
-    public function variation() {
-        return $this->belongsTo('Solunes\Business\App\Variation');
-    }
-
-    public function variation_option() {
-        return $this->belongsTo('Solunes\Business\App\VariationOption');
-    }
-
     public function stockable_product_bridge_variations() {
         return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption')->groupBy('variation_id');
-    }
-
-    public function product_bridge_variation_options() {
-        return $this->hasMany('Solunes\Business\App\ProductBridgeVariationOption');
     }
 
     public function product_bridge_parent() {
@@ -83,6 +75,10 @@ class ProductBridge extends Model {
         }
     }
 
+    public function pricing_rule() {
+        return $this->hasOne('Solunes\Business\App\PricingRule');
+    }
+
     public function currency() {
         return $this->belongsTo('Solunes\Business\App\Currency');
     }
@@ -96,10 +92,14 @@ class ProductBridge extends Model {
     }
 
     public function getTotalStockAttribute() {
-        if(count($this->product_bridge_stocks)>0){
-            return $this->product_bridge_stocks->sum('quantity');
+        if(config('inventory.basic_inventory')){
+            return $this->quantity;
         } else {
-            return 0;
+            if(count($this->product_bridge_stocks)>0){
+                return $this->product_bridge_stocks->sum('quantity');
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -113,14 +113,31 @@ class ProductBridge extends Model {
         return $url;
     }
 
+    public function getFullPriceAttribute() {
+        $price = $this->price;
+        return $price;
+    }
+
     public function getRealPriceAttribute() {
         $price = $this->price;
-        if($offer = $this->product_offer){
-            if($offer->type=='discount_percentage'){
-                $price = $price - ($price * $offer->value / 100);
-            } else if($offer->type=='discount_value'){
-                $price = $price - $offer->value;
+        if($this->discount_price){
+            $price = $this->discount_price;
+        }
+        if(config('business.pricing_rules')){
+            $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','product')->where('product_bridge_id', $this->id)->first();
+            if(!$range_price){
+                $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','automatic')->where('item_type','category')->where('category_id', $this->category_id)->first();
             }
+            if($range_price){
+                if($range_price->item_type=='percentage'){
+                    $price = $price - ($price * $offer->discount_percentage / 100);
+                } else if($range_price->item_type=='normal'){
+                    $price = $price - $offer->discount_value;
+                }
+            } 
+        }
+        if($price<0){
+            $price = 0;
         }
         return $price;
     }

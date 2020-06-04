@@ -26,9 +26,17 @@ class Variation extends Model {
 		'name'=>'required',
 		'type'=>'required',
 	);
-			
+
+    public function agency() {
+        return $this->belongsTo('Solunes\Business\App\Agency');
+    }
+					
     public function variation_options() {
         return $this->hasMany('Solunes\Business\App\VariationOption','parent_id');
     }
-	
+				
+    public function default_variation_options() {
+        return $this->hasMany('Solunes\Business\App\VariationOption','parent_id')->where('default',1);
+    }
+
 }

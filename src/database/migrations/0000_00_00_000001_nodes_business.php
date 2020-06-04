@@ -120,13 +120,37 @@ class NodesBusiness extends Migration
             $table->integer('city_id')->nullable();
             $table->string('city_other')->nullable();
             $table->string('address')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->text('map')->nullable();
-            if(config('solunes.inventory')){
+            if(config('solunes.agency_shippings')&&config('business.variation_agencies')){
+                if(config('sales.delivery_select_day')){
+                    $table->boolean('delivery_select_day')->default(1);
+                }
+                if(config('sales.delivery_select_hour')){
+                    $table->boolean('delivery_select_hour')->default(1);
+                }
+            }
+            if(config('solunes.inventory')&&config('business.variation_agencies')){
                 $table->boolean('stockable')->default(1);
             }
+
             $table->timestamps();
         });
+        if(config('business.agency_payment_methods')){
+            Schema::create('agency_payment_method', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('agency_id')->nullable();
+                $table->integer('payment_method_id')->nullable();
+            });
+        }
+        if(config('business.agency_shippings')){
+            Schema::create('agency_shipping', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('agency_id')->nullable();
+                $table->integer('shipping_id')->nullable();
+            });
+        }
         if(config('business.companies')){
             Schema::create('companies', function (Blueprint $table) {
                 $table->increments('id');
@@ -195,6 +219,9 @@ class NodesBusiness extends Migration
         if(config('business.categories')){
             Schema::create('categories', function (Blueprint $table) {
                 $table->increments('id');
+                if(config('product.product_agency')){
+                    $table->integer('agency_id')->nullable();
+                }
                 $table->integer('parent_id')->nullable();
                 $table->integer('level')->nullable();
                 $table->integer('order')->nullable()->default(0);
@@ -216,6 +243,31 @@ class NodesBusiness extends Migration
                 $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             });
         }
+        if(config('business.channels')){
+            Schema::create('channels', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('slug')->nullable();
+                $table->enum('type', ['public','private'])->nullable()->default('public');
+                $table->string('name')->nullable();
+                $table->timestamps();
+            });
+        }
+        if(config('business.brands')){
+            Schema::create('brands', function (Blueprint $table) {
+                $table->increments('id');
+                if(config('product.product_agency')){
+                    $table->integer('agency_id')->nullable();
+                }
+                $table->integer('parent_id')->nullable();
+                $table->integer('level')->nullable();
+                $table->integer('order')->nullable()->default(0);
+                $table->string('slug')->nullable();
+                if(config('product.category_image')||config('business.category_image')){
+                    $table->string('image')->nullable();
+                }
+                $table->timestamps();
+            });
+        }
         Schema::create('product_bridges', function (Blueprint $table) {
             $table->increments('id');
             $table->string('product_type')->nullable();
@@ -234,12 +286,15 @@ class NodesBusiness extends Migration
             if(config('business.product_barcode')){
                 $table->string('barcode')->nullable();
             }
+            if(config('business.product_sku')){
+                $table->string('sku')->nullable();
+            }
             $table->integer('currency_id')->unsigned();
             $table->decimal('price', 10, 2)->nullable()->default(0);
-            $table->decimal('weight', 10, 2)->nullable()->default(0);
             if(config('payments.sfv_version')>1||config('payments.discounts')){
                 $table->decimal('discount_price', 10, 2)->nullable();
             }
+            $table->decimal('weight', 10, 2)->nullable()->default(0);
             if(config('payments.sfv_version')>1){
                 $table->string('economic_sin_activity')->nullable();
                 $table->string('product_sin_code')->nullable();
@@ -252,18 +307,21 @@ class NodesBusiness extends Migration
             }
             if(config('solunes.inventory')){
                 $table->boolean('stockable')->nullable()->default(0);
+                if(config('inventory.basic_inventory')){
+                    $table->integer('quantity')->nullable()->default(1);
+                }
             }
             if(config('business.product_variations')){
-                $table->integer('variation_id')->nullable();
-                $table->integer('variation_option_id')->nullable();
-                if(config('business.second_product_variations')){
+                //$table->integer('variation_id')->nullable();
+                //$table->integer('variation_option_id')->nullable();
+                /*if(config('business.second_product_variations')){
                     $table->integer('variation_2_id')->nullable();
                     $table->integer('variation_option_2_id')->nullable();
                 }
                 if(config('business.third_product_variations')){
                     $table->integer('variation_3_id')->nullable();
                     $table->integer('variation_option_3_id')->nullable();
-                }
+                }*/
             }
             $table->enum('delivery_type', ['normal','digital','recurrent','subscription','reservation','ticket','credit'])->nullable()->default('normal');
             if(config('product.product_url')){
@@ -287,15 +345,25 @@ class NodesBusiness extends Migration
             $table->unique(['product_bridge_id','locale']);
             $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
         });
+        if(config('business.channels')){
+            Schema::create('product_bridge_channel', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('product_bridge_id')->nullable();
+                $table->integer('channel_id')->nullable();
+            });
+        }
         if(config('business.product_variations')){
             Schema::create('variations', function (Blueprint $table) {
                 $table->increments('id');
-                $table->enum('type', ['choice','quantities'])->default('choice');
-                $table->enum('subtype', ['normal', 'color', 'image'])->nullable()->default('normal');
-                if(config('solunes.inventory')){
-                    $table->boolean('stockable')->nullable()->default(1);
+                if(config('product.variation_agency')){
+                    $table->integer('agency_id')->nullable();
                 }
-                $table->string('advanced')->nullable()->default(0);
+                $table->enum('type', ['label','choice','quantities'])->default('choice');
+                $table->enum('subtype', ['normal', 'color', 'image'])->nullable()->default('normal');
+                //if(config('solunes.inventory')){
+                    $table->boolean('stockable')->nullable()->default(1);
+                //}
+                $table->boolean('advanced')->nullable()->default(0);
                 $table->integer('max_choices')->nullable()->default(0);
                 $table->boolean('optional')->nullable()->default(0);
                 $table->timestamps();
@@ -314,6 +382,9 @@ class NodesBusiness extends Migration
                 $table->integer('parent_id')->nullable();
                 $table->decimal('extra_price', 10, 2)->nullable()->default(0);
                 $table->integer('max_quantity')->nullable()->default(0);
+                $table->boolean('default')->nullable()->default(0);
+                $table->string('color')->nullable();
+                $table->string('image')->nullable();
                 $table->timestamps();
             });
             Schema::create('variation_option_translation', function(Blueprint $table) {
@@ -325,39 +396,52 @@ class NodesBusiness extends Migration
                 $table->unique(['variation_option_id','locale']);
                 $table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
             });
-            Schema::create('product_variation', function (Blueprint $table) {
+            if(config('business.categories')){
+                Schema::create('category_variation', function (Blueprint $table) {
+                    $table->increments('id');
+                    $table->integer('category_id')->unsigned();
+                    $table->integer('variation_id')->unsigned();
+                    $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+                    $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
+                });
+            }
+            Schema::create('product_bridge_variation', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_bridge_id')->nullable();
-                $table->integer('product_id')->nullable();
                 $table->integer('variation_id')->unsigned();
-                $table->integer('quantity')->nullable();
+                //$table->integer('product_id')->nullable();
+                /*$table->integer('quantity')->nullable();
                 $table->decimal('new_price',10,2)->nullable();
                 $table->string('value')->nullable();
+                $table->boolean('active')->default(1);*/
                 $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
             });
-            Schema::create('product_bridge_variation_options', function (Blueprint $table) {
+            Schema::create('product_bridge_variation_option', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_bridge_id')->unsigned();
-                $table->integer('variation_id')->unsigned();
+                //$table->integer('variation_id')->unsigned();
                 $table->integer('variation_option_id')->unsigned();
-                $table->timestamps();
+                //$table->timestamps();
                 $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
-                $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
+                //$table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
                 $table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
             });
         }
         if(config('business.pricing_rules')){
             Schema::create('pricing_rules', function (Blueprint $table) {
                 $table->increments('id');
+                $table->string('name')->nullable();
+                $table->enum('type', ['automatic','coupon'])->nullable();
+                $table->string('coupon_code')->nullable();
+                $table->enum('item_type', ['general', 'category','product'])->nullable()->default('general');
                 $table->integer('category_id')->nullable();
                 $table->integer('product_bridge_id')->nullable();
-                $table->enum('agency_type', ['maintain', 'central', 'store', 'office', 'storage', 'other'])->nullable()->default('maintain');
-                $table->enum('type', ['normal', 'percentage'])->nullable()->default('normal');
-                $table->enum('product', ['general', 'category','product'])->nullable()->default('product');
                 $table->boolean('active')->nullable()->default(1);
-                $table->integer('min_quantity')->nullable();
-                $table->integer('max_quantity')->nullable();
-                $table->decimal('value', 10, 2)->nullable();
+                $table->enum('discount_type', ['normal', 'percentage'])->nullable()->default('normal');
+                //$table->integer('currency_id')->nullable();
+                $table->decimal('discount_value', 10, 2)->nullable();
+                $table->integer('discount_percentage')->nullable();
+                $table->enum('user_usages', ['once', 'unlimited'])->nullable()->default('once');
                 $table->timestamps();
             });
         }
@@ -373,6 +457,10 @@ class NodesBusiness extends Migration
         // Módulo General de Negocio
         Schema::dropIfExists('pricing_rules');
         Schema::dropIfExists('product_bridge_variation_options');
+        Schema::dropIfExists('product_bridge_variation_option');
+        Schema::dropIfExists('product_bridge_channel');
+        Schema::dropIfExists('product_bridge_variation');
+        Schema::dropIfExists('category_variation');
         Schema::dropIfExists('product_variation');
         Schema::dropIfExists('variation_option_translation');
         Schema::dropIfExists('variation_options');
@@ -380,15 +468,18 @@ class NodesBusiness extends Migration
         Schema::dropIfExists('variations');
         Schema::dropIfExists('product_bridge_translation');
         Schema::dropIfExists('product_bridges');
-        Schema::dropIfExists('bridge_category_translation');
+        Schema::dropIfExists('channels');
+        Schema::dropIfExists('brands');
+        Schema::dropIfExists('category_variation');
         Schema::dropIfExists('category_translation');
-        Schema::dropIfExists('bridge_categories');
         Schema::dropIfExists('categories');
         Schema::dropIfExists('deal_contact');
         Schema::dropIfExists('deal_company');
         Schema::dropIfExists('deals');
         Schema::dropIfExists('contacts');
         Schema::dropIfExists('companies');
+        Schema::dropIfExists('agency_shipping');
+        Schema::dropIfExists('agency_payment_method');
         Schema::dropIfExists('agencies');
         Schema::dropIfExists('currency_translation');
         Schema::dropIfExists('currencies');

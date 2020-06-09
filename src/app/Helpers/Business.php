@@ -288,7 +288,7 @@ class Business {
         if(config('business.pricing_rules')){
             if($coupon_code){
                 if(!$range_price){
-                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('item_type','general')->where('coupon_code', $coupon_code)->first();
+                    $range_price = \Solunes\Business\App\PricingRule::where('active','1')->where('type','coupon')->where('item_type','general')->where('coupon_code', $coupon_code)->first();
                 }
             } 
             if(!$range_price){
@@ -336,7 +336,7 @@ class Business {
     }
 
     public static function getProductPrice($product_bridge, $quantity, $coupon_code = NULL) {
-        $price = $product_bridge->real_price;
+        $price = $product_bridge->full_price;
         $range_price = NULL;
         if(config('business.pricing_rules')){
             if($coupon_code){

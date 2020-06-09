@@ -12,14 +12,16 @@ class Brand extends Model {
 	/* Creating rules */
 	public static $rules_create = array(
 		'name'=>'required',
-		'type'=>'required',
 	);
 
 	/* Updating rules */
 	public static $rules_edit = array(
 		'id'=>'required',
 		'name'=>'required',
-		'type'=>'required',
 	);
+
+    public function parent() {
+        return $this->belongsTo('Solunes\Business\App\Brand', 'parent_id');
+    }
 
 }

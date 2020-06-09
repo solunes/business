@@ -45,6 +45,10 @@ class ProductBridge extends Model {
     
     public function seller_user() {
         return $this->belongsTo('App\User');
+    }    
+
+    public function brand() {
+        return $this->belongsTo('Solunes\Business\App\Brand');
     }
     
     public function agency() {

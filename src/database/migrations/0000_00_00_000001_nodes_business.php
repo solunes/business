@@ -131,7 +131,7 @@ class NodesBusiness extends Migration
                     $table->boolean('delivery_select_hour')->default(1);
                 }
             }
-            if(config('solunes.inventory')&&config('business.variation_agencies')){
+            if(config('solunes.inventory')||config('business.variation_agencies')){
                 $table->boolean('stockable')->default(1);
             }
 

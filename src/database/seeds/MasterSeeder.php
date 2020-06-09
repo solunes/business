@@ -66,7 +66,7 @@ class MasterSeeder extends Seeder {
                 \Solunes\Master\App\Node::create(['name'=>'category-variation', 'table_name'=>'category_variation', 'location'=>'business', 'translation'=>1, 'model'=>'\Solunes\Business\App\Variation', 'type'=>'field', 'parent_id'=>$node_category->id]);
             }
             if(config('business.channels')){
-                \Solunes\Master\App\Node::create(['name'=>'product-bridge-channel', 'table_name'=>'product_bridge_channel', 'location'=>'business', 'translation'=>1, 'model'=>'\Solunes\Business\App\Channel', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
+                \Solunes\Master\App\Node::create(['name'=>'product-bridge-channel', 'table_name'=>'product_bridge_channel', 'location'=>'business', 'translation'=>0, 'model'=>'\Solunes\Business\App\Channel', 'type'=>'field', 'parent_id'=>$node_product_bridge->id]);
                 $channel = \Solunes\Business\App\Channel::create(['name'=>'Tienda','type'=>'public']);
             }
             $image_folder = \Solunes\Master\App\ImageFolder::create(['site_id'=>1,'name'=>'variation-option-image','extension'=>'jpg']);

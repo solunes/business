@@ -352,6 +352,7 @@ class NodesBusiness extends Migration
             Schema::create('product_bridge_channel', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_bridge_id')->nullable();
+                $table->integer('product_id')->nullable();
                 $table->integer('channel_id')->nullable();
             });
         }
@@ -411,23 +412,23 @@ class NodesBusiness extends Migration
             Schema::create('product_bridge_variation', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('product_bridge_id')->nullable();
-                $table->integer('variation_id')->unsigned();
-                //$table->integer('product_id')->nullable();
+                $table->integer('variation_id')->nullable();
+                $table->integer('product_id')->nullable();
                 /*$table->integer('quantity')->nullable();
                 $table->decimal('new_price',10,2)->nullable();
                 $table->string('value')->nullable();
                 $table->boolean('active')->default(1);*/
-                $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
+                //$table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
             });
             Schema::create('product_bridge_variation_option', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('product_bridge_id')->unsigned();
-                //$table->integer('variation_id')->unsigned();
-                $table->integer('variation_option_id')->unsigned();
+                $table->integer('product_bridge_id')->nullable();
+                $table->integer('product_id')->nullable();
+                $table->integer('variation_option_id')->nullable();
                 //$table->timestamps();
-                $table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
+                //$table->foreign('product_bridge_id')->references('id')->on('product_bridges')->onDelete('cascade');
                 //$table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
-                $table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
+                //$table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
             });
         }
         if(config('business.pricing_rules')){

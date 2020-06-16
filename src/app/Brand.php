@@ -24,4 +24,8 @@ class Brand extends Model {
         return $this->belongsTo('Solunes\Business\App\Brand', 'parent_id');
     }
 
+    public function product_bridges() {
+        return $this->hasMany('Solunes\Business\App\ProductBridge');
+    }
+
 }

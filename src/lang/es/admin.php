@@ -61,5 +61,7 @@ return array(
 	'free-shipping' => 'Envío Gratuito',
 	'private' => 'Privado',
 	'public' => 'Público',
+    'once' => 'Único',
+    'unlimited' => 'Ilimitado',
 
 );

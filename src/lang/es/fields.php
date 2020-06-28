@@ -128,4 +128,8 @@ return [
     'product_bridge_channel' => 'Canal de Producto',
     'shipping' => 'Método de Envío',
     'item_type' => 'Tipo de Item',
+    'barcode' => 'Código de Barras',
+    'brand' => 'Marca',
+    'user_usages' => 'Usos por Usuario',
+    
 ];

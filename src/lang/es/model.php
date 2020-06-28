@@ -36,5 +36,7 @@ return [
     'product-variation-option' => 'Opción de Variación de Producto|Opciones de Variación de Producto',
     'product-group-subscription' => 'Suscripción de Producto|Suscripción de Productos',
     'channel' => 'Canal de Venta|Canales de Venta',
+    'brand' => 'Marca|Marcas',
+    'product-bridge-channel' => 'Canal de Venta de Producto|Canales de Venta de Productos',
 
 ];

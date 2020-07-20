@@ -63,5 +63,6 @@ return array(
 	'public' => 'Público',
     'once' => 'Único',
     'unlimited' => 'Ilimitado',
+    'channel' => 'Canal',
 
 );

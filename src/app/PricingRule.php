@@ -29,6 +29,10 @@ class PricingRule extends Model {
     public function currency() {
         return $this->belongsTo('Solunes\Business\App\Currency');
     }
+       
+    public function channel() {
+        return $this->belongsTo('Solunes\Business\App\Channel');
+    }
 
     public function product_bridge() {
         return $this->belongsTo('Solunes\Business\App\ProductBridge');

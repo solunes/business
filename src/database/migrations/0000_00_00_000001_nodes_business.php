@@ -437,6 +437,10 @@ class NodesBusiness extends Migration
                 $table->string('name')->nullable();
                 $table->enum('type', ['automatic','coupon'])->nullable();
                 $table->string('coupon_code')->nullable();
+                if(config('business.channels')){
+                    $table->boolean('filter_by_channel')->nullable()->default(0);
+                    $table->integer('channel_id')->nullable();
+                }
                 $table->enum('item_type', ['general', 'category','product'])->nullable()->default('general');
                 $table->integer('category_id')->nullable();
                 $table->integer('product_bridge_id')->nullable();

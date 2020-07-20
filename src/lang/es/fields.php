@@ -131,5 +131,7 @@ return [
     'barcode' => 'Código de Barras',
     'brand' => 'Marca',
     'user_usages' => 'Usos por Usuario',
+    'channel_id' => 'Canal',
+    'filter_by_channel' => 'Canal',
     
 ];

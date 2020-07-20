@@ -337,6 +337,9 @@ class Business {
 
     public static function getProductPrice($product_bridge, $quantity, $coupon_code = NULL) {
         $price = $product_bridge->full_price;
+        if($product_bridge->discount_price){
+            $price = $product_bridge->discount_price;
+        }
         $range_price = NULL;
         if(config('business.pricing_rules')){
             if($coupon_code){

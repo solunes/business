@@ -13,7 +13,9 @@ class NodesBusiness extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('agency_id')->nullable()->after('status');
+            if(config('business.agencies')){
+                $table->integer('agency_id')->nullable()->after('status');
+            }
             if(config('business.contacts')){
                 $table->integer('contact_id')->nullable()->after('status');
             }
@@ -219,7 +221,7 @@ class NodesBusiness extends Migration
         if(config('business.categories')){
             Schema::create('categories', function (Blueprint $table) {
                 $table->increments('id');
-                if(config('product.product_agency')){
+                if(config('business.agencies')&&config('product.product_agency')){
                     $table->integer('agency_id')->nullable();
                 }
                 $table->integer('parent_id')->nullable();
@@ -246,6 +248,9 @@ class NodesBusiness extends Migration
         if(config('business.channels')){
             Schema::create('channels', function (Blueprint $table) {
                 $table->increments('id');
+                if(config('business.agencies')&&config('product.product_agency')){
+                    $table->integer('agency_id')->nullable();
+                }
                 $table->string('slug')->nullable();
                 $table->enum('type', ['public','private'])->nullable()->default('public');
                 $table->string('name')->nullable();
@@ -255,7 +260,7 @@ class NodesBusiness extends Migration
         if(config('business.brands')){
             Schema::create('brands', function (Blueprint $table) {
                 $table->increments('id');
-                if(config('product.product_agency')){
+                if(config('business.agencies')&&config('product.product_agency')){
                     $table->integer('agency_id')->nullable();
                 }
                 $table->integer('parent_id')->nullable();
@@ -278,7 +283,7 @@ class NodesBusiness extends Migration
             if(config('product.seller_user')){
                 $table->integer('seller_user_id')->nullable();
             }
-            if(config('product.product_agency')){
+            if(config('business.agencies')&&config('product.product_agency')){
                 $table->integer('agency_id')->nullable();
             }
             if(config('business.brands')){
@@ -359,7 +364,7 @@ class NodesBusiness extends Migration
         if(config('business.product_variations')){
             Schema::create('variations', function (Blueprint $table) {
                 $table->increments('id');
-                if(config('product.variation_agency')){
+                if(config('business.agencies')&&config('product.variation_agency')){
                     $table->integer('agency_id')->nullable();
                 }
                 $table->enum('type', ['label','choice','quantities'])->default('choice');
@@ -434,6 +439,9 @@ class NodesBusiness extends Migration
         if(config('business.pricing_rules')){
             Schema::create('pricing_rules', function (Blueprint $table) {
                 $table->increments('id');
+                if(config('business.agencies')&&config('product.product_agency')){
+                    $table->integer('agency_id')->nullable();
+                }
                 $table->string('name')->nullable();
                 $table->enum('type', ['automatic','coupon'])->nullable();
                 $table->string('coupon_code')->nullable();

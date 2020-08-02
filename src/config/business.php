@@ -25,6 +25,7 @@ return [
 	'online_store_agency_id' => 1,
 	'companies' => false,
 	'contacts' => false,
+	'agencies' => false,
 	'deals' => false,
 	'brands' => false,
 	'channels' => false,

@@ -71,7 +71,7 @@ class CustomAdminController extends Controller {
         } else {
             $quantity = 10000;
         }
-        $price = $item->price;
+        $price = \Business::getProductPrice($item, 1);
         if($item->currency_id!=$currency->id){
             $price = $price*$item->currency->main_exchange;
         }
